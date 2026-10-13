@@ -81,7 +81,7 @@ export function RoasCalculator() {
   const estimatedRoas = (estimatedRevenue / monthlySpend).toFixed(1);
 
   return (
-    <div className="rounded-sm border border-border bg-card p-6 sm:p-10 shadow-soft">
+    <div className="rounded-sm border border-border bg-card p-4 sm:p-8 lg:p-10 shadow-soft">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
         <div>
           <div className="eyebrow">

@@ -56,11 +56,11 @@ export function Navbar() {
         <div className="mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between gap-4 px-4 lg:px-8">
           {/* Logo / Wordmark */}
           <Link to="/" className="group flex flex-col">
-            <span className="font-serif text-2xl tracking-tight text-foreground transition-colors group-hover:text-gold">
-              MetaHaus
+            <span className="font-serif text-xl sm:text-2xl tracking-wider font-semibold text-foreground transition-colors group-hover:text-gold">
+              METAHAUS_BYFARAH
             </span>
-            <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              By Farah · Meta Ads
+            <span className="font-sans text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+              Performance Meta Ads
             </span>
           </Link>
 

@@ -14,7 +14,7 @@ import { LiveStatsTicker } from "@/components/common/LiveStatsTicker";
 export const Route = createFileRoute("/results")({
   head: () => ({
     meta: [
-      { title: "Campaign Results & Verified Proof — MetaHaus by Farah" },
+      { title: "Campaign Results & Verified Proof — METAHAUS_BYFARAH" },
       {
         name: "description",
         content:
@@ -46,21 +46,21 @@ function ResultsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Header */}
-      <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground">
+      <section className="relative overflow-hidden bg-primary py-12 sm:py-20 text-primary-foreground">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(186,151,88,0.25),rgba(255,255,255,0))]" />
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl reveal">
             <span className="eyebrow text-gold">100% Verified Platform Proof</span>
-            <h1 className="mt-4 text-4xl sm:text-6xl font-serif leading-[1.1] text-white">
+            <h1 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-serif leading-[1.1] text-white">
               Real Meta Ads Manager Reporting. Zero Fabricated Data.
             </h1>
-            <p className="mt-6 text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
+            <p className="mt-4 sm:mt-6 text-sm sm:text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
               Every metric, lead count, and cost per result on this page is backed by direct captures from active client accounts across the UK, UAE, and GCC.
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <a
                 href="#proof-gallery"
-                className="inline-flex items-center gap-2 rounded-sm bg-gold px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary shadow-soft transition-all hover:bg-gold-soft hover:shadow-gold"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-gold px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary shadow-soft transition-all hover:bg-gold-soft hover:shadow-gold text-center"
               >
                 <span>Inspect 9 Live Dashboards</span>
                 <ArrowRight className="h-4 w-4" />
@@ -69,7 +69,7 @@ function ResultsPage() {
                 href={whatsappLink("Hello Farah, I'm reviewing your Meta Ads Manager dashboards and would like to discuss similar results.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-sm border border-primary-foreground/20 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary-foreground transition-all hover:border-gold hover:text-gold"
+                className="inline-flex items-center justify-center gap-2 rounded-sm border border-primary-foreground/20 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary-foreground transition-all hover:border-gold hover:text-gold text-center"
               >
                 Discuss Real Data on WhatsApp
               </a>
@@ -82,8 +82,8 @@ function ResultsPage() {
       <LiveStatsTicker />
 
       {/* 1. DEDICATED META ADS MANAGER PROOF GALLERY */}
-      <section id="proof-gallery" className="py-20 bg-background border-b border-border">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section id="proof-gallery" className="py-12 sm:py-20 bg-background border-b border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-8">
             <div>
               <span className="eyebrow">
@@ -196,13 +196,13 @@ function ResultsPage() {
       </section>
 
       {/* 2. CASE STUDY CARDS WITH EMBEDDED DASHBOARD THUMBNAILS */}
-      <section className="py-20 bg-background">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="py-12 sm:py-20 bg-background">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Filter Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
             <div>
-              <h2 className="font-serif text-3xl text-foreground">Verified Case Study Breakdowns</h2>
-              <p className="text-sm text-muted-foreground mt-1">
+              <h2 className="font-serif text-2xl sm:text-3xl text-foreground">Verified Case Study Breakdowns</h2>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                 Showing {filteredStudies.length} real campaign studies
               </p>
             </div>

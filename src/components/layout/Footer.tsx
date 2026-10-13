@@ -60,8 +60,8 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 pb-10 border-b border-border">
           {/* Brand */}
           <div className="space-y-3">
-            <Link to="/" className="inline-block font-serif text-xl tracking-tight text-foreground">
-              MetaHaus <span className="font-sans text-xs italic text-gold">by Farah</span>
+            <Link to="/" className="inline-block font-serif text-xl tracking-wider font-semibold text-foreground hover:text-gold transition-colors">
+              METAHAUS_BYFARAH
             </Link>
             <p className="text-xs leading-relaxed text-muted-foreground">
               Boutique Meta Ads consultancy for luxury beauty, bridal artistry, aesthetic medicine, and creative academies.
@@ -193,8 +193,18 @@ export function Footer() {
 
         {/* Bottom Legal */}
         <div className="pt-6 border-t border-border flex flex-col items-center gap-3 text-[11px] text-muted-foreground sm:flex-row sm:justify-between">
-          <div className="flex flex-col gap-1 text-center sm:text-left">
-            <p>© {new Date().getFullYear()} MetaHaus by Farah. All rights reserved.</p>
+          <div className="flex flex-col gap-1.5 text-center sm:text-left">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2.5 gap-y-1">
+              <p>© {new Date().getFullYear()} METAHAUS_BYFARAH. All rights reserved.</p>
+              <span>·</span>
+              <Link to="/privacy" className="text-muted-foreground hover:text-gold transition-colors underline-offset-2 hover:underline">
+                Privacy Policy
+              </Link>
+              <span>·</span>
+              <Link to="/terms" className="text-muted-foreground hover:text-gold transition-colors underline-offset-2 hover:underline">
+                Terms of Service
+              </Link>
+            </div>
             <p>
               Powered by{" "}
               <a

@@ -48,28 +48,28 @@ function IndustriesPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground">
+      <section className="relative overflow-hidden bg-primary py-12 sm:py-20 text-primary-foreground">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(186,151,88,0.22),rgba(255,255,255,0))]" />
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl reveal">
             <span className="eyebrow text-gold">Domain Specialization</span>
-            <h1 className="mt-4 text-4xl sm:text-6xl font-serif leading-[1.1] text-white">
+            <h1 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-serif leading-[1.1] text-white">
               We Speak The Language of Luxury Beauty & Aesthetics
             </h1>
-            <p className="mt-6 text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
+            <p className="mt-4 sm:mt-6 text-sm sm:text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
               Generic agencies treat aesthetic clinics and bridal artists like plumbers or e-commerce dropshippers. We understand the emotional nuance, trust barriers, and high-ticket purchase psychology unique to beauty.
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link
                 to="/calculator"
-                className="inline-flex items-center gap-2 rounded-sm bg-gold px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary shadow-soft transition-all hover:bg-gold-soft hover:shadow-gold"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-gold px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary shadow-soft transition-all hover:bg-gold-soft hover:shadow-gold text-center"
               >
                 <span>Check Your Industry Forecast</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/results"
-                className="inline-flex items-center gap-2 rounded-sm border border-primary-foreground/20 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary-foreground transition-all hover:border-gold hover:text-gold"
+                className="inline-flex items-center justify-center gap-2 rounded-sm border border-primary-foreground/20 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary-foreground transition-all hover:border-gold hover:text-gold text-center"
               >
                 <span>View Industry Case Studies</span>
               </Link>
@@ -82,12 +82,12 @@ function IndustriesPage() {
       <LiveStatsTicker />
 
       {/* Primary Sectors Deep-Dive */}
-      <section className="py-20 bg-background">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-14 lg:grid-cols-2 items-center mb-20 border-b border-border pb-16">
+      <section className="py-12 sm:py-20 bg-background">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-2 items-center mb-12 sm:mb-20 border-b border-border pb-10 sm:pb-16">
             <div>
               <span className="eyebrow">Flagship Focus</span>
-              <h2 className="mt-3 font-serif text-3xl sm:text-5xl text-foreground">
+              <h2 className="mt-3 font-serif text-2xl sm:text-5xl text-foreground">
                 Bridal & Luxury Aesthetics: Our Core Arena
               </h2>
               <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
@@ -129,11 +129,11 @@ function IndustriesPage() {
           </div>
 
           {/* Primary Industries Grid */}
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
             {primaryIndustries.map((ind) => (
               <div
                 key={ind.slug}
-                className="rounded-sm border border-border bg-card p-8 shadow-xs flex flex-col justify-between hover:border-gold transition-colors"
+                className="rounded-sm border border-border bg-card p-5 sm:p-8 shadow-xs flex flex-col justify-between hover:border-gold transition-colors"
               >
                 <div>
                   <span className="eyebrow">{ind.tagline}</span>
@@ -174,11 +174,11 @@ function IndustriesPage() {
       </section>
 
       {/* Other Specialized Industries */}
-      <section className="border-t border-border bg-card py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="border-t border-border bg-card py-12 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
             <span className="eyebrow">Additional Sectors</span>
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl text-foreground">
+            <h2 className="mt-3 font-serif text-2xl sm:text-4xl text-foreground">
               Proven Performance Across Selected Consumer Verticals
             </h2>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
@@ -206,11 +206,11 @@ function IndustriesPage() {
       </section>
 
       {/* Regional Market Intelligence */}
-      <section className="border-t border-border bg-background py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="border-t border-border bg-background py-12 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
             <span className="eyebrow">Geographic Footprint</span>
-            <h2 className="mt-3 font-serif text-3xl sm:text-5xl text-foreground">
+            <h2 className="mt-3 font-serif text-2xl sm:text-5xl text-foreground">
               Targeted Strategies Tailored To Local Market Realities
             </h2>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">

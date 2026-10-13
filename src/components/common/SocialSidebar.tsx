@@ -16,7 +16,7 @@ export function SocialSidebar() {
     },
     {
       label: "Instagram",
-      subtitle: "@metahausbyfarah",
+      subtitle: "@metahaus_byfarah",
       href: contact.instagram,
       bg: "bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] hover:opacity-95",
       shadow: "shadow-[0_4px_14px_rgba(220,39,67,0.35)]",
@@ -28,7 +28,7 @@ export function SocialSidebar() {
     },
     {
       label: "LinkedIn",
-      subtitle: "Farah Performance",
+      subtitle: "Farah Ansari",
       href: contact.linkedin,
       bg: "bg-[#0A66C2] hover:bg-[#084e96]",
       shadow: "shadow-[0_4px_14px_rgba(10,102,194,0.35)]",
@@ -40,7 +40,7 @@ export function SocialSidebar() {
     },
     {
       label: "Facebook",
-      subtitle: "MetaHaus Page",
+      subtitle: "METAHAUS_BYFARAH",
       href: "https://facebook.com",
       bg: "bg-[#1877F2] hover:bg-[#0d65d9]",
       shadow: "shadow-[0_4px_14px_rgba(24,119,242,0.35)]",

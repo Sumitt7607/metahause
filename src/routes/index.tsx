@@ -17,7 +17,7 @@ import { LiveStatsTicker } from "@/components/common/LiveStatsTicker";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MetaHaus by Farah — Meta Ads Specialist for Beauty & Bridal Brands" },
+      { title: "METAHAUS_BYFARAH — Meta Ads Specialist for Beauty & Bridal Brands" },
       {
         name: "description",
         content:
@@ -158,7 +158,7 @@ function HomePage() {
 
       {/* 3. FEATURED RESULTS PREVIEW */}
       <section className="border-t border-border bg-card py-12 sm:py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-8">
             <div>
               <span className="eyebrow">Direct Platform Proof</span>
@@ -254,7 +254,7 @@ function HomePage() {
 
       {/* 4. SERVICES OVERVIEW */}
       <section className="border-t border-border bg-card py-12 sm:py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-8">
             <div>
               <span className="eyebrow">Strategic Capabilities</span>
@@ -367,7 +367,7 @@ function HomePage() {
 
       {/* 7. MEET FARAH (ABOUT TEASER) */}
       <section className="border-t border-border bg-card py-12 sm:py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-2 items-center">
             <div className="relative">
               <img
@@ -381,7 +381,7 @@ function HomePage() {
             <div className="space-y-6">
               <span className="eyebrow">Meet The Founder</span>
               <h2 className="font-serif text-3xl sm:text-5xl text-foreground">
-                Hi, I'm Farah — Founder of MetaHaus
+                Hi, I'm Farah — Founder of METAHAUS_BYFARAH
               </h2>
               <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
                 <p>
@@ -416,8 +416,8 @@ function HomePage() {
       </section>
 
       {/* 8. DIRECT PLATFORM PROOF SUMMARY (NO FABRICATED TESTIMONIALS) */}
-      <section className="border-t border-border bg-background py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="border-t border-border bg-background py-12 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto">
             <span className="eyebrow">Verified Proof Highlights</span>
             <h2 className="mt-3 font-serif text-3xl sm:text-5xl text-foreground">
@@ -468,7 +468,7 @@ function HomePage() {
 
       {/* 9. READY TO SCALE CTA STRIP */}
       <section className="border-t border-border bg-primary py-12 sm:py-20 text-primary-foreground">
-        <div className="mx-auto max-w-5xl px-5 text-center lg:px-8">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 text-center lg:px-8">
           <span className="eyebrow text-gold">Ready For Predictable Bookings?</span>
           <h2 className="mt-3 font-serif text-3xl sm:text-5xl text-white">
             Let's Build Your Meta Ads Engine
@@ -506,7 +506,7 @@ function HomePage() {
           aria-modal="true"
         >
           <div
-            className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-sm border border-gold/40 bg-card p-8 shadow-2xl reveal"
+            className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-sm border border-gold/40 bg-card p-5 sm:p-8 shadow-2xl reveal"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between border-b border-border pb-4">

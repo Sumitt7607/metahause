@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowRight, MessageCircle, Mail, Instagram,
-  Linkedin, CheckCircle2, ShieldCheck, Clock, MapPin,
+  Linkedin, CheckCircle2, ShieldCheck, Clock, MapPin, Phone,
 } from "lucide-react";
 import { contact, whatsappLink, services } from "@/content/site";
 import { LiveStatsTicker } from "@/components/common/LiveStatsTicker";
@@ -10,7 +10,7 @@ import { LiveStatsTicker } from "@/components/common/LiveStatsTicker";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Book a Strategy Session — MetaHaus by Farah" },
+      { title: "Book a Strategy Session — METAHAUS_BYFARAH" },
       {
         name: "description",
         content:
@@ -80,15 +80,15 @@ function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground">
+      <section className="relative overflow-hidden bg-primary py-12 sm:py-20 text-primary-foreground">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(186,151,88,0.22),rgba(255,255,255,0))]" />
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl reveal">
             <span className="eyebrow text-gold">Direct Consultation</span>
-            <h1 className="mt-4 text-4xl sm:text-6xl font-serif leading-[1.1] text-white">
+            <h1 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-serif leading-[1.1] text-white">
               Let's Discuss Scaling Your Brand With Strategic Meta Ads
             </h1>
-            <p className="mt-6 text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
+            <p className="mt-4 sm:mt-6 text-sm sm:text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
               Tell us about your brand, current challenges, and growth objectives. Farah personally reviews every submission and responds within 24 hours.
             </p>
           </div>
@@ -99,9 +99,9 @@ function ContactPage() {
       <LiveStatsTicker />
 
       {/* Main Form and Direct Contact Cards */}
-      <section className="py-20 bg-background">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-14 lg:grid-cols-12">
+      <section className="py-12 sm:py-20 bg-background">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-12">
             {/* Left Column: Direct Fast-Track & Info */}
             <div className="space-y-8 lg:col-span-5">
               <div>
@@ -168,6 +168,15 @@ function ContactPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
+                  <Phone className="h-4 w-4 text-gold shrink-0" />
+                  <div>
+                    <span className="text-foreground font-medium block">Phone / WhatsApp:</span>
+                    <a href={`tel:${contact.phoneRaw}`} className="hover:text-gold transition-colors font-mono">
+                      {contact.phoneDisplay}
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
                   <Linkedin className="h-4 w-4 text-gold shrink-0" />
                   <div>
                     <span className="text-foreground font-medium block">LinkedIn:</span>
@@ -177,7 +186,7 @@ function ContactPage() {
                       rel="noopener noreferrer"
                       className="hover:text-gold transition-colors"
                     >
-                      Farah · Performance Marketing
+                      {contact.linkedinDisplay}
                     </a>
                   </div>
                 </div>
@@ -246,7 +255,7 @@ function ContactPage() {
                 <form
                   onSubmit={handleSubmit}
                   noValidate
-                  className="rounded-sm border border-border bg-card p-8 sm:p-10 shadow-soft"
+                  className="rounded-sm border border-border bg-card p-5 sm:p-10 shadow-soft"
                 >
                   <div>
                     <span className="eyebrow">Strategy Intake</span>

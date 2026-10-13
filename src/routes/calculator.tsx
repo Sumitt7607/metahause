@@ -7,7 +7,7 @@ import { whatsappLink } from "@/content/site";
 export const Route = createFileRoute("/calculator")({
   head: () => ({
     meta: [
-      { title: "Meta Ads ROAS & Revenue Calculator — MetaHaus by Farah" },
+      { title: "Meta Ads ROAS & Revenue Calculator — METAHAUS_BYFARAH" },
       {
         name: "description",
         content:
@@ -53,15 +53,15 @@ function CalculatorPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground">
+      <section className="relative overflow-hidden bg-primary py-12 sm:py-20 text-primary-foreground">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(186,151,88,0.22),rgba(255,255,255,0))]" />
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl reveal">
             <span className="eyebrow text-gold">Interactive Financial Forecasting</span>
-            <h1 className="mt-4 text-4xl sm:text-6xl font-serif leading-[1.1] text-white">
+            <h1 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-serif leading-[1.1] text-white">
               Simulate Your Revenue Growth With Precision
             </h1>
-            <p className="mt-6 text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
+            <p className="mt-4 sm:mt-6 text-sm sm:text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
               Before investing in advertising, test your unit economics. Use our real-time Meta Ads model to forecast projected client enquiries, lead costs, and revenue upside.
             </p>
           </div>
@@ -72,12 +72,12 @@ function CalculatorPage() {
       <LiveStatsTicker />
 
       {/* Interactive Tool Section */}
-      <section className="py-20 bg-background">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="py-12 sm:py-20 bg-background">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <RoasCalculator />
 
           {/* Industry Benchmarks Table */}
-          <div className="mt-20 border-t border-border pt-16">
+          <div className="mt-12 sm:mt-20 border-t border-border pt-10 sm:pt-16">
             <div className="max-w-2xl">
               <span className="eyebrow">Data Transparency</span>
               <h3 className="mt-2 font-serif text-3xl text-foreground">

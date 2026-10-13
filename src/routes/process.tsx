@@ -9,7 +9,7 @@ import { LiveStatsTicker } from "@/components/common/LiveStatsTicker";
 export const Route = createFileRoute("/process")({
   head: () => ({
     meta: [
-      { title: "Our 6-Step Scaling Process & Roadmap — MetaHaus by Farah" },
+      { title: "Our 6-Step Scaling Process & Roadmap — METAHAUS_BYFARAH" },
       {
         name: "description",
         content:
@@ -52,28 +52,28 @@ function ProcessPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground">
+      <section className="relative overflow-hidden bg-primary py-12 sm:py-20 text-primary-foreground">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(186,151,88,0.22),rgba(255,255,255,0))]" />
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl reveal">
             <span className="eyebrow text-gold">Structured Scientific Scaling</span>
-            <h1 className="mt-4 text-4xl sm:text-6xl font-serif leading-[1.1] text-white">
+            <h1 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-serif leading-[1.1] text-white">
               A Clear 6-Stage Process. Zero Guesswork.
             </h1>
-            <p className="mt-6 text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
+            <p className="mt-4 sm:mt-6 text-sm sm:text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
               We don't 'throw spaghetti at the wall'. Every campaign follows a battle-tested roadmap designed to validate creative hooks quickly, eliminate wasted budget, and scale profitable client bookings.
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 rounded-sm bg-gold px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary shadow-soft transition-all hover:bg-gold-soft hover:shadow-gold"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-gold px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary shadow-soft transition-all hover:bg-gold-soft hover:shadow-gold text-center"
               >
                 <span>Initiate Your Growth Sprint</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/results"
-                className="inline-flex items-center gap-2 rounded-sm border border-primary-foreground/20 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary-foreground transition-all hover:border-gold hover:text-gold"
+                className="inline-flex items-center justify-center gap-2 rounded-sm border border-primary-foreground/20 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary-foreground transition-all hover:border-gold hover:text-gold text-center"
               >
                 <span>Review Verified Results</span>
               </Link>
@@ -86,23 +86,23 @@ function ProcessPage() {
       <LiveStatsTicker />
 
       {/* The 6-Stage Roadmap Timeline */}
-      <section className="py-20 bg-background">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="py-12 sm:py-20 bg-background">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
             <span className="eyebrow">The Framework</span>
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl text-foreground">
+            <h2 className="mt-3 font-serif text-2xl sm:text-4xl text-foreground">
               The 6 Stages of Meta Ads Dominance
             </h2>
-            <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-              Here is exactly what happens when you partner with MetaHaus by Farah.
+            <p className="mt-3 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Here is exactly what happens when you partner with METAHAUS_BYFARAH.
             </p>
           </div>
 
-          <div className="mt-16 space-y-12">
+          <div className="mt-10 sm:mt-16 space-y-6 sm:space-y-12">
             {steps.map((step, index) => (
               <div
                 key={step.number}
-                className="relative grid gap-8 rounded-sm border border-border bg-card p-8 shadow-xs md:grid-cols-12 items-center hover:border-gold transition-colors"
+                className="relative grid gap-6 sm:gap-8 rounded-sm border border-border bg-card p-5 sm:p-8 shadow-xs md:grid-cols-12 items-center hover:border-gold transition-colors"
               >
                 <div className="md:col-span-3 border-b border-border md:border-b-0 md:border-r md:pr-8 pb-6 md:pb-0">
                   <div className="flex items-baseline gap-2">
@@ -141,14 +141,14 @@ function ProcessPage() {
       </section>
 
       {/* First 10 Days Onboarding Roadmap */}
-      <section className="border-t border-border bg-card py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="border-t border-border bg-card py-12 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
             <span className="eyebrow">Seamless Execution</span>
-            <h2 className="mt-3 font-serif text-3xl sm:text-5xl text-foreground">
+            <h2 className="mt-3 font-serif text-2xl sm:text-5xl text-foreground">
               What Your First 10 Days Look Like
             </h2>
-            <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+            <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-muted-foreground leading-relaxed">
               We take the friction out of onboarding. No messy email chains or endless forms — just a streamlined, rapid launch pipeline.
             </p>
           </div>
@@ -178,12 +178,12 @@ function ProcessPage() {
       </section>
 
       {/* Reporting & Communication Protocol */}
-      <section className="border-t border-border bg-background py-20">
-        <div className="mx-auto max-w-5xl px-5 lg:px-8">
-          <div className="rounded-sm border border-gold/40 bg-primary p-8 sm:p-12 text-primary-foreground shadow-gold">
+      <section className="border-t border-border bg-background py-12 sm:py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="rounded-sm border border-gold/40 bg-primary p-5 sm:p-12 text-primary-foreground shadow-gold">
             <div className="max-w-2xl">
               <span className="eyebrow text-gold">Communication Protocol</span>
-              <h3 className="mt-2 font-serif text-3xl sm:text-4xl text-white">
+              <h3 className="mt-2 font-serif text-2xl sm:text-4xl text-white">
                 How We Stay Connected With You
               </h3>
               <p className="mt-3 text-sm text-primary-foreground/80 leading-relaxed">

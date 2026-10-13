@@ -90,13 +90,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "MetaHaus by Farah — Meta Ads Specialist for Beauty & Bridal Brands" },
+      { title: "METAHAUS_BYFARAH — Meta Ads Specialist for Beauty & Bridal Brands" },
       {
         name: "description",
         content:
           "Strategic Meta Ads, high-intent lead generation and campaign scaling for luxury beauty, bridal artists, aesthetic clinics and EdTech brands across Europe, UK, UAE and GCC.",
       },
-      { name: "author", content: "MetaHaus by Farah" },
+      { name: "author", content: "METAHAUS_BYFARAH" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

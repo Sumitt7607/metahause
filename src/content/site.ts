@@ -23,15 +23,19 @@ export {
 
 // Contact details
 export const contact = {
-  whatsapp: "971500000000",
-  whatsappDisplay: "+971 50 000 0000",
+  whatsapp: "919899966384",
+  whatsappDisplay: "+91 98999 66384",
+  phone: "+91 98999 66384",
+  phoneDisplay: "+91 98999 66384",
+  phoneRaw: "9899966384",
   email: "hello@metahausbyfarah.com",
-  instagram: "https://instagram.com/metahausbyfarah",
-  instagramHandle: "@metahausbyfarah",
-  linkedin: "https://linkedin.com/in/farah-performance",
+  instagram: "https://instagram.com/metahaus_byfarah?cplk=MWFzbGFmNXlzaTAxZw%3D%3D",
+  instagramHandle: "@metahaus_byfarah",
+  linkedin: "https://www.linkedin.com/in/farah-ansari-537278202?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+  linkedinDisplay: "Farah Ansari",
   locationPrimary: "Dubai, United Arab Emirates",
   locationSecondary: "London, United Kingdom",
-  hours: "Mon – Fri: 9:00 AM – 6:00 PM (GST / BST)",
+  hours: "Mon – Fri: 9:00 AM – 6:00 PM (GST / BST / IST)",
 };
 
 export const whatsappLink = (customMessage?: string) =>

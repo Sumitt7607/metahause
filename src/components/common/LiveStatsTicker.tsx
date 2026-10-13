@@ -17,8 +17,8 @@ export function LiveStatsTicker() {
   return (
     <div className="relative overflow-hidden border-y border-border bg-card/90 py-3.5 backdrop-blur">
       {/* Subtle edge fades for luxury depth */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-card to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-card to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 sm:w-24 bg-gradient-to-r from-card to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 sm:w-24 bg-gradient-to-l from-card to-transparent" />
 
       <div className="animate-marquee flex items-center gap-8">
         {duplicatedItems.map((item, index) => {

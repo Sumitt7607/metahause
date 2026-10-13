@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181B1E"/>
+      <stop offset="50%" stop-color="#0E1012"/>
+      <stop offset="100%" stop-color="#060708"/>
+    </linearGradient>
+
+    <!-- Luxury Champagne Gold Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF2CE"/>
+      <stop offset="25%" stop-color="#E5C378"/>
+      <stop offset="70%" stop-color="#C5A059"/>
+      <stop offset="100%" stop-color="#8F6E28"/>
+    </linearGradient>
+
+    <!-- Subtle Outer Glow / Border -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#8F6E28" stop-opacity="0.3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Icon Tile with Rounded Corners -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="1.5"/>
+
+  <!-- Subtle Inner Ring -->
+  <rect x="5.5" y="5.5" width="53" height="53" rx="11" fill="none" stroke="url(#goldGrad)" stroke-width="0.75" stroke-opacity="0.3"/>
+
+  <!-- Elegant 4-Point Diamond Sparkle Star at Top Center -->
+  <path d="M32 9.5 L33.4 14 L37.5 15.5 L33.4 17 L32 21.5 L30.6 17 L26.5 15.5 L30.6 14 Z" fill="url(#goldGrad)"/>
+
+  <!-- Luxury Monogram "M" -->
+  <g fill="url(#goldGrad)">
+    <!-- Left Stem with Serif -->
+    <path d="M16 48 L16 45.5 L18.5 45.5 L18.5 28.5 L16 28.5 L16 26 L23.5 26 L23.5 28.5 L21.5 28.5 L21.5 43.5 L29.5 26 L34.5 26 L42.5 43.5 L42.5 28.5 L40.5 28.5 L40.5 26 L48 26 L48 28.5 L45.5 28.5 L45.5 45.5 L48 45.5 L48 48 L41 48 L41 45.5 L43 45.5 L43 32 L34 48 L30 48 L21 32 L21 45.5 L23 45.5 L23 48 Z"/>
+  </g>
+
+  <!-- Small Elegant Accent Dot -->
+  <circle cx="32" cy="49" r="1.5" fill="url(#goldGrad)"/>
+</svg>

@@ -69,7 +69,7 @@ function ResultsPage() {
                 href={whatsappLink("Hello Farah, I'm reviewing your Meta Ads Manager dashboards and would like to discuss similar results.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-sm border border-primary-foreground/20 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary-foreground transition-all hover:border-gold hover:text-gold text-center"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-emerald-600 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-soft transition-all hover:bg-emerald-700 hover:shadow-lg text-center"
               >
                 Discuss Real Data on WhatsApp
               </a>
@@ -360,7 +360,7 @@ function ResultsPage() {
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-8 py-4 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow-soft transition-all hover:bg-gold hover:text-primary"
+              className="inline-flex items-center justify-center gap-2 rounded-sm bg-rose-600 px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-soft transition-all hover:bg-rose-700 hover:shadow-lg"
             >
               <span>Schedule 1-on-1 Strategy Session</span>
               <ArrowRight className="h-4 w-4" />
@@ -369,7 +369,7 @@ function ResultsPage() {
               href={whatsappLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-sm border border-border bg-background px-8 py-4 text-xs font-bold uppercase tracking-wider text-foreground transition-all hover:border-gold hover:text-gold"
+              className="inline-flex items-center justify-center gap-2 rounded-sm bg-emerald-600 px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-soft transition-all hover:bg-emerald-700 hover:shadow-lg"
             >
               <span>Chat Directly on WhatsApp</span>
             </a>
@@ -504,7 +504,7 @@ function ResultsPage() {
                   href={whatsappLink(`Hello Farah, I'm interested in achieving results similar to your ${activeModalStudy.campaign} case study.`)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto text-center rounded-sm bg-primary px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-gold hover:text-primary transition-colors"
+                  className="w-full sm:w-auto text-center rounded-sm bg-emerald-600 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-emerald-700 shadow-xs transition-colors"
                 >
                   Discuss On WhatsApp
                 </a>

@@ -246,9 +246,9 @@ function IndustriesPage() {
               href={whatsappLink("Hello Farah, I'd like to ask about targeting our beauty brand in specific regions.")}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-sm bg-primary px-8 py-4 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-gold hover:text-primary transition-colors shadow-soft"
+              className="inline-flex items-center gap-2 rounded-sm bg-emerald-600 px-8 py-4 text-xs font-bold uppercase tracking-wider text-white hover:bg-emerald-700 transition-colors shadow-soft"
             >
-              <span>Consult On Your Regional Strategy</span>
+              <span>Consult On Your Regional Strategy (WhatsApp)</span>
               <ArrowRight className="h-4 w-4" />
             </a>
           </div>

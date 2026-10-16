@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, X, ArrowRight, Sparkles, MessageCircle, PhoneCall } from "lucide-react";
 import { contact, whatsappLink } from "@/content/site";
+import { useAnnouncement } from "@/lib/announcementStore";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const announcement = useAnnouncement();
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
 
@@ -15,7 +17,6 @@ export function Navbar() {
     { label: "Industries", to: "/industries" },
     { label: "About", to: "/about" },
     { label: "Process", to: "/process" },
-    { label: "ROAS Calculator", to: "/calculator" },
     { label: "Contact", to: "/contact" },
   ] as const;
 
@@ -27,29 +28,31 @@ export function Navbar() {
   return (
     <>
       {/* Live Announcement Ribbon */}
-      <div className="relative z-50 bg-primary px-4 py-1.5 text-primary-foreground text-xs">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-            </span>
-            <span className="font-medium text-emerald-300 shrink-0 hidden sm:inline">Live:</span>
-            <span className="text-primary-foreground/90 truncate text-[11px] sm:text-xs">
-              Accepting 2 new brand partners for Q2.
-            </span>
+      {announcement.enabled && (
+        <div className="relative z-50 bg-primary px-4 py-1.5 text-primary-foreground text-xs">
+          <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+              </span>
+              <span className="font-medium text-emerald-300 shrink-0 hidden sm:inline">{announcement.badge}</span>
+              <span className="text-primary-foreground/90 truncate text-[11px] sm:text-xs">
+                {announcement.message}
+              </span>
+            </div>
+            <a
+              href={whatsappLink(announcement.whatsappMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 inline-flex items-center gap-1 text-[11px] text-emerald-400 hover:text-emerald-300 hover:underline font-semibold"
+            >
+              <MessageCircle className="h-3 w-3" />
+              <span className="hidden sm:inline">WhatsApp</span>
+            </a>
           </div>
-          <a
-            href={whatsappLink("Hello Farah, I'd like to check your availability for Q2 campaign management.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 inline-flex items-center gap-1 text-[11px] text-gold hover:underline"
-          >
-            <MessageCircle className="h-3 w-3" />
-            <span className="hidden sm:inline">WhatsApp</span>
-          </a>
         </div>
-      </div>
+      )}
 
       {/* Main Luxury Header */}
       <header className="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-md transition-all">
@@ -91,7 +94,7 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               to="/contact"
-              className="hidden sm:inline-flex items-center gap-2 rounded-sm bg-primary px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-primary-foreground shadow-soft transition-all duration-300 hover:bg-gold hover:text-primary hover:shadow-gold"
+              className="hidden sm:inline-flex items-center gap-2 rounded-sm bg-rose-600 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white shadow-soft transition-all duration-300 hover:bg-rose-700 hover:shadow-lg"
             >
               <span>Book Strategy Call</span>
               <ArrowRight className="h-3.5 w-3.5" />
@@ -137,7 +140,7 @@ export function Navbar() {
               <Link
                 to="/contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex w-full items-center justify-center gap-2 rounded-sm bg-primary py-3 text-center text-sm font-semibold text-primary-foreground transition-colors hover:bg-gold hover:text-primary"
+                className="flex w-full items-center justify-center gap-2 rounded-sm bg-rose-600 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-rose-700 shadow-soft"
               >
                 <PhoneCall className="h-4 w-4" />
                 <span>Book Strategy Session</span>
@@ -147,9 +150,9 @@ export function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex w-full items-center justify-center gap-2 rounded-sm border border-emerald-600/40 bg-emerald-50/50 py-3 text-center text-sm font-semibold text-emerald-800 transition-colors hover:bg-emerald-100"
+                className="flex w-full items-center justify-center gap-2 rounded-sm bg-emerald-600 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-emerald-700 shadow-soft"
               >
-                <MessageCircle className="h-4 w-4 text-emerald-600" />
+                <MessageCircle className="h-4 w-4 text-white" />
                 <span>Chat on WhatsApp Directly</span>
               </a>
             </div>

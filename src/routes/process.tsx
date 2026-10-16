@@ -226,7 +226,7 @@ function ProcessPage() {
               </span>
               <Link
                 to="/contact"
-                className="w-full sm:w-auto text-center rounded-sm bg-gold px-6 py-3 text-xs font-bold uppercase tracking-wider text-primary hover:bg-gold-soft transition-colors shadow-soft"
+                className="w-full sm:w-auto text-center rounded-sm bg-rose-600 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-rose-700 transition-colors shadow-soft"
               >
                 Schedule Strategy Session
               </Link>

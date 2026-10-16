@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { services, faqs, whatsappLink } from "@/content/site";
 import { LiveStatsTicker } from "@/components/common/LiveStatsTicker";
+import { PricingSection } from "@/components/common/PricingSection";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -147,138 +148,8 @@ function ServicesPage() {
         </div>
       </section>
 
-      {/* Engagement Models & Retainers */}
-      <section className="border-t border-border bg-card py-12 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto">
-            <span className="eyebrow">Collaboration Framework</span>
-            <h2 className="mt-3 font-serif text-2xl sm:text-5xl text-foreground">
-              Structured Retainers & Growth Tiers
-            </h2>
-            <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              We work on capped client rosters to ensure obsessive attention to your ad metrics and daily performance adjustments.
-            </p>
-          </div>
-
-          <div className="mt-10 sm:mt-14 grid gap-6 sm:gap-8 md:grid-cols-3">
-            {/* Tier 1 */}
-            <div className="rounded-sm border border-border bg-background p-5 sm:p-8 flex flex-col justify-between shadow-xs">
-              <div>
-                <span className="eyebrow">Diagnostic Phase</span>
-                <h3 className="mt-2 font-serif text-xl sm:text-2xl text-foreground">The Growth Audit & Roadmap</h3>
-                <p className="mt-1 sm:mt-2 text-xs text-muted-foreground">One-time deep dive into your account.</p>
-                <div className="mt-4 sm:mt-6 border-t border-border pt-4 sm:pt-6">
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    A comprehensive 30+ point diagnostic of your past campaigns, pixel health, tracking discrepancies, creative bottlenecks, and competitor positioning.
-                  </p>
-                  <ul className="mt-4 sm:mt-6 space-y-2 text-xs text-foreground">
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> Full Meta Ad Account Audit
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> Competitor Ad Intelligence
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> 90-Day Scaling Blueprint
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> 60-Min Strategy Presentation
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-border">
-                <Link
-                  to="/contact"
-                  className="block w-full text-center rounded-sm border border-border bg-card py-3 text-xs font-bold uppercase tracking-wider text-foreground hover:border-gold hover:text-gold transition-colors"
-                >
-                  Book Growth Audit
-                </Link>
-              </div>
-            </div>
-
-            {/* Tier 2 - Featured */}
-            <div className="rounded-sm border-2 border-gold bg-primary p-5 sm:p-8 text-primary-foreground flex flex-col justify-between shadow-gold relative">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3.5 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-primary whitespace-nowrap">
-                Most Popular Engagement
-              </div>
-              <div>
-                <span className="eyebrow text-gold">Full Execution</span>
-                <h3 className="mt-2 font-serif text-xl sm:text-2xl text-white">Full-Funnel Growth Retainer</h3>
-                <p className="mt-1 sm:mt-2 text-xs text-primary-foreground/70">Hands-off daily performance scaling.</p>
-                <div className="mt-4 sm:mt-6 border-t border-primary-foreground/15 pt-4 sm:pt-6">
-                  <p className="text-xs text-primary-foreground/80 leading-relaxed">
-                    End-to-end management of your Meta Ads Manager. We design the funnels, write the copy, direct creative angles, optimize daily bids, and scale qualified enquiries.
-                  </p>
-                  <ul className="mt-4 sm:mt-6 space-y-2 text-xs text-white">
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> Daily Bid & Audience Optimization
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> Bi-Weekly Creative Scripting Briefs
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> Lead Qualification Funnel Setup
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> Direct WhatsApp & Slack Sync
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> Live Real-Time Dashboard
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-primary-foreground/15">
-                <Link
-                  to="/contact"
-                  className="block w-full text-center rounded-sm bg-gold py-3 text-xs font-bold uppercase tracking-wider text-primary hover:bg-gold-soft transition-colors shadow-soft"
-                >
-                  Apply For Retainer
-                </Link>
-              </div>
-            </div>
-
-            {/* Tier 3 */}
-            <div className="rounded-sm border border-border bg-background p-5 sm:p-8 flex flex-col justify-between shadow-xs">
-              <div>
-                <span className="eyebrow">Enterprise & Academy</span>
-                <h3 className="mt-2 font-serif text-xl sm:text-2xl text-foreground">Multi-Region & Cohort Scale</h3>
-                <p className="mt-1 sm:mt-2 text-xs text-muted-foreground">For international chains & academies.</p>
-                <div className="mt-4 sm:mt-6 border-t border-border pt-4 sm:pt-6">
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Designed for multi-location clinic chains, regional cosmetic brands, or beauty academies requiring cross-border multi-lingual campaigns across Europe, UK, and GCC.
-                  </p>
-                  <ul className="mt-4 sm:mt-6 space-y-2 text-xs text-foreground">
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> Multi-Market Targeting (UK / GCC)
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> Bilingual Arabic/English Copywriting
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> High-Volume Creative Batching
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-3.5 w-3.5 text-gold shrink-0" /> Priority Executive Slack Access
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-border">
-                <a
-                  href={whatsappLink("Hello Farah, I'd like to discuss an enterprise multi-region Meta Ads engagement.")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full text-center rounded-sm border border-border bg-card py-3 text-xs font-bold uppercase tracking-wider text-foreground hover:border-gold hover:text-gold transition-colors"
-                >
-                  Contact For Custom Scope
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* 4 Niche Pricing & Investment Options */}
+      <PricingSection />
 
       {/* Services FAQ */}
       <section className="py-12 sm:py-20 bg-background border-t border-border">

@@ -151,9 +151,9 @@ function PrivacyPage() {
                 href={whatsappLink("Hello Farah, I have a question regarding your Privacy Policy.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-sm bg-primary px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-gold hover:text-primary transition-colors"
+                className="inline-flex items-center gap-2 rounded-sm bg-emerald-600 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-emerald-700 transition-colors shadow-soft"
               >
-                <MessageCircle className="h-3.5 w-3.5 text-gold" />
+                <MessageCircle className="h-3.5 w-3.5 text-white" />
                 <span>Contact via WhatsApp</span>
               </a>
             </div>

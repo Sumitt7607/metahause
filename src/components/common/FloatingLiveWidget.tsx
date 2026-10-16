@@ -48,22 +48,22 @@ export function FloatingLiveWidget() {
                 href={whatsappLink("Hello Farah, I'm reaching out from your website to ask about Meta Ads management.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between rounded-sm border border-emerald-600/30 bg-emerald-50/60 p-2.5 sm:p-3 text-xs font-semibold text-emerald-900 transition-all hover:bg-emerald-100"
+                className="flex items-center justify-between rounded-sm bg-emerald-600 p-2.5 sm:p-3 text-xs font-semibold text-white transition-all hover:bg-emerald-700 shadow-xs"
               >
                 <div className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4 text-emerald-600 shrink-0" />
+                  <MessageCircle className="h-4 w-4 text-white shrink-0" />
                   <span>Start WhatsApp Chat</span>
                 </div>
-                <ArrowRight className="h-3.5 w-3.5 text-emerald-700 shrink-0" />
+                <ArrowRight className="h-3.5 w-3.5 text-white/90 shrink-0" />
               </a>
 
               <Link
                 to="/contact"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-between rounded-sm bg-primary p-2.5 sm:p-3 text-xs font-semibold text-primary-foreground transition-all hover:bg-gold hover:text-primary"
+                className="flex items-center justify-between rounded-sm bg-rose-600 p-2.5 sm:p-3 text-xs font-semibold text-white transition-all hover:bg-rose-700 shadow-xs"
               >
                 <div className="flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-gold shrink-0" />
+                  <Zap className="h-4 w-4 text-white shrink-0" />
                   <span>Book Strategy Call</span>
                 </div>
                 <ArrowRight className="h-3.5 w-3.5 shrink-0" />

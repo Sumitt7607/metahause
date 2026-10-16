@@ -58,7 +58,7 @@ function AboutPage() {
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-sm bg-gold px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary shadow-soft transition-all hover:bg-gold-soft hover:shadow-gold text-center"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-rose-600 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-soft transition-all hover:bg-rose-700 hover:shadow-lg text-center"
               >
                 <span>Book 1-on-1 Consultation With Farah</span>
                 <ArrowRight className="h-4 w-4" />
@@ -67,9 +67,9 @@ function AboutPage() {
                 href={whatsappLink("Hello Farah, I'd like to chat directly about your background and how we might work together.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-sm border border-primary-foreground/20 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-primary-foreground transition-all hover:border-gold hover:text-gold text-center"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-emerald-600 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-soft transition-all hover:bg-emerald-700 hover:shadow-lg text-center"
               >
-                <MessageCircle className="h-4 w-4 text-gold" />
+                <MessageCircle className="h-4 w-4 text-white" />
                 <span>Chat On WhatsApp</span>
               </a>
             </div>

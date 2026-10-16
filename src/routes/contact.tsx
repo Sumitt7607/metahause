@@ -237,7 +237,7 @@ function ContactPage() {
                       href={whatsappLink(`Hello Farah, I just submitted an inquiry on your website for ${formData.business || formData.name}.`)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-6 py-3 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-gold hover:text-primary transition-colors"
+                      className="inline-flex items-center justify-center gap-2 rounded-sm bg-emerald-600 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-emerald-700 transition-colors shadow-soft"
                     >
                       <MessageCircle className="h-4 w-4" />
                       <span>Notify Farah On WhatsApp</span>

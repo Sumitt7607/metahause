@@ -13,6 +13,7 @@ import {
   whatsappLink, type CaseStudy,
 } from "@/content/site";
 import { LiveStatsTicker } from "@/components/common/LiveStatsTicker";
+import { PricingSection } from "@/components/common/PricingSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -35,11 +36,17 @@ function HomePage() {
     <div className="min-h-screen">
       {/* 1. HERO SECTION */}
       <section className="relative overflow-hidden bg-background pt-8 pb-12 sm:pt-10 sm:pb-20 lg:pt-16 lg:pb-28">
-        {/* Background Ambient Glows */}
-        <div className="pointer-events-none absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-gold/10 blur-3xl" />
-        <div className="pointer-events-none absolute top-1/2 -left-20 h-80 w-80 rounded-full bg-gold-soft/20 blur-3xl" />
+        {/* Background Grid & Ambient Glows (matching geometric grid + soft light wash) */}
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+          {/* Ethereal sky-blue ambient gradient glow on the right (matches user reference) */}
+          <div className="absolute -top-32 -right-16 h-[700px] w-[700px] rounded-full bg-gradient-to-bl from-sky-200/50 via-blue-100/30 to-transparent blur-3xl" />
+          {/* Soft warm luxury ambient glow on the bottom-left */}
+          <div className="absolute top-1/2 -left-20 h-96 w-96 rounded-full bg-gold/10 blur-3xl" />
+          {/* Precision Geometric Grid Overlay */}
+          <div className="absolute inset-0 hero-grid-pattern" />
+        </div>
 
-        <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 lg:gap-14 lg:grid-cols-[1.1fr_1fr] lg:px-8">
+        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 lg:gap-14 lg:grid-cols-[1.1fr_1fr] lg:px-8">
           {/* Left Column: Copy & Actions */}
           <div className="reveal space-y-6">
             <div className="inline-flex items-center gap-2.5 rounded-full border border-gold/40 bg-card px-4 py-1.5 text-xs shadow-xs">
@@ -53,8 +60,8 @@ function HomePage() {
             </div>
 
             <h1 className="text-3xl leading-[1.1] sm:text-5xl lg:text-[4.2rem] font-serif text-foreground">
-              Meta Ads That Fill Your Diary With{" "}
-              <span className="gold-gradient-text italic font-serif">High-Intent</span> Enquiries
+              Meta Ads that generate{" "}
+              <span className="gold-gradient-text italic font-serif">better Enquiries</span> for Beauty & Bridal Brands.
             </h1>
 
             <p className="max-w-xl text-sm sm:text-base leading-relaxed text-muted-foreground">
@@ -64,7 +71,7 @@ function HomePage() {
             <div className="flex flex-col gap-3.5 sm:flex-row pt-2">
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-7 py-4 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow-soft transition-all duration-300 hover:bg-gold hover:text-primary hover:shadow-gold"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-rose-600 px-7 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-soft transition-all duration-300 hover:bg-rose-700 hover:shadow-lg"
               >
                 <span>Book 1-on-1 Strategy Session</span>
                 <ArrowRight className="h-4 w-4" />
@@ -298,7 +305,7 @@ function HomePage() {
                   <span className="text-muted-foreground">{service.timeline}</span>
                   <Link
                     to="/services"
-                    className="font-bold text-foreground group-hover:text-gold transition-colors inline-flex items-center gap-1"
+                    className="inline-flex items-center gap-1.5 rounded-sm bg-black px-4 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-zinc-800 transition-all shadow-xs"
                   >
                     <span>Details</span>
                     <ArrowRight className="h-3 w-3" />
@@ -415,7 +422,8 @@ function HomePage() {
         </div>
       </section>
 
-      {/* 8. DIRECT PLATFORM PROOF SUMMARY (NO FABRICATED TESTIMONIALS) */}
+      {/* 8. DIRECT PLATFORM PROOF SUMMARY (NO FABRICATED TESTIMONIALS) - COMMENTED OUT FOR NOW */}
+      {/*
       <section className="border-t border-border bg-background py-12 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto">
@@ -465,6 +473,8 @@ function HomePage() {
           </div>
         </div>
       </section>
+      {/* 8. TRANSPARENT PRICING & INVESTMENT OPTIONS */}
+      <PricingSection />
 
       {/* 9. READY TO SCALE CTA STRIP */}
       <section className="border-t border-border bg-primary py-12 sm:py-20 text-primary-foreground">
@@ -479,7 +489,7 @@ function HomePage() {
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-sm bg-gold px-8 py-4 text-xs font-bold uppercase tracking-wider text-primary shadow-soft transition-all hover:bg-gold-soft hover:shadow-gold"
+              className="inline-flex items-center justify-center gap-2 rounded-sm bg-rose-600 px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-soft transition-all hover:bg-rose-700 hover:shadow-lg"
             >
               <span>Schedule Strategy Call With Farah</span>
               <ArrowRight className="h-4 w-4" />
@@ -488,7 +498,7 @@ function HomePage() {
               href={whatsappLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-sm border border-primary-foreground/20 px-8 py-4 text-xs font-bold uppercase tracking-wider text-white transition-all hover:border-gold hover:text-gold"
+              className="inline-flex items-center justify-center gap-2 rounded-sm bg-emerald-600 px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-soft transition-all hover:bg-emerald-700 hover:shadow-lg"
             >
               <MessageCircle className="h-4 w-4" />
               <span>Direct WhatsApp Inquiry</span>

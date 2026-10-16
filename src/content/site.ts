@@ -38,6 +38,15 @@ export const contact = {
   hours: "Mon – Fri: 9:00 AM – 6:00 PM (GST / BST / IST)",
 };
 
+// Live Announcement Ribbon configuration (Edit this anytime to change months or availability)
+export const announcement = {
+  enabled: true,
+  badge: "Live:",
+  message: "Now accepting 2 new brand partners for October – November 2026.",
+  whatsappMessage:
+    "Hello Farah, I'd like to check your availability for October – November campaign management.",
+};
+
 export const whatsappLink = (customMessage?: string) =>
   `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(
     customMessage || "Hello Farah, I'd like to discuss scaling our brand with strategic Meta Ads.",

@@ -208,7 +208,7 @@ export function Footer() {
 
           </div>
           <p className="text-center sm:text-right max-w-xs">
-            Facebook® and Instagram® are trademarks of Meta Platforms, Inc. Past results do not guarantee future returns.
+            Instagram® is a trademark of Meta Platforms, Inc. Past results do not guarantee future returns.
           </p>
         </div>
       </div>

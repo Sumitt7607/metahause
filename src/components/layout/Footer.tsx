@@ -205,18 +205,7 @@ export function Footer() {
                 Terms of Service
               </Link>
             </div>
-            <p>
-              Powered by{" "}
-              <a
-                href="https://www.nexcoretech.online/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gold hover:underline font-medium transition-colors"
-              >
-                Nexcore Technologies
-              </a>
-              {" "}— Digital Marketing & Web Development Agency
-            </p>
+
           </div>
           <p className="text-center sm:text-right max-w-xs">
             Facebook® and Instagram® are trademarks of Meta Platforms, Inc. Past results do not guarantee future returns.

@@ -28,7 +28,7 @@ export const contact = {
   phone: "+91 98999 66384",
   phoneDisplay: "+91 98999 66384",
   phoneRaw: "9899966384",
-  email: "hello@metahausbyfarah.com",
+  email: "Farahansari0033@gmail.com",
   instagram: "https://instagram.com/metahaus_byfarah?cplk=MWFzbGFmNXlzaTAxZw%3D%3D",
   instagramHandle: "@metahaus_byfarah",
   linkedin: "https://www.linkedin.com/in/farah-ansari-537278202?utm_source=share_via&utm_content=profile&utm_medium=member_android",

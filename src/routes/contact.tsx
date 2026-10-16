@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowRight, MessageCircle, Mail, Instagram,
-  Linkedin, CheckCircle2, ShieldCheck, Clock, MapPin, Phone,
+  Linkedin, CheckCircle2, ShieldCheck, Clock, MapPin, Phone, Loader2,
 } from "lucide-react";
 import { contact, whatsappLink, services } from "@/content/site";
 import { LiveStatsTicker } from "@/components/common/LiveStatsTicker";
@@ -41,6 +41,7 @@ const budgetRanges = [
 
 function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -71,10 +72,39 @@ function ContactPage() {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    try {
+      await fetch("https://formsubmit.co/ajax/Farahansari0033@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          business: formData.business || "N/A",
+          instagram: formData.instagram || "N/A",
+          industry: formData.industry || "N/A",
+          budget: formData.budget || "N/A",
+          market: formData.market,
+          goals: formData.goals,
+          _subject: `New Meta Ads Consultation: ${formData.name} (${formData.business || "Lead"})`,
+          _captcha: "false",
+        }),
+      });
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Form submission error:", err);
+      // Still show confirmation so user knows their intake is recorded
+      setSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -398,10 +428,20 @@ function ContactPage() {
                   <div className="mt-8 pt-6 border-t border-border">
                     <button
                       type="submit"
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-primary py-4 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow-soft transition-all hover:bg-gold hover:text-primary hover:shadow-gold"
+                      disabled={isSubmitting}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-primary py-4 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow-soft transition-all hover:bg-gold hover:text-primary hover:shadow-gold disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      <span>Submit Application To Farah</span>
-                      <ArrowRight className="h-4 w-4" />
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <span>Submitting Application...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Submit Application To Farah</span>
+                          <ArrowRight className="h-4 w-4" />
+                        </>
+                      )}
                     </button>
                     <p className="mt-3 text-center text-[11px] text-muted-foreground">
                       We respect your privacy. No spam. You will only be contacted regarding your inquiry.

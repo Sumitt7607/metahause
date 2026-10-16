@@ -25,9 +25,25 @@ export function Footer() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailInput.trim()) return;
+    try {
+      await fetch("https://formsubmit.co/ajax/Farahansari0033@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          email: emailInput,
+          _subject: "New Newsletter Subscriber (METAHAUS)",
+          _captcha: "false",
+        }),
+      });
+    } catch (err) {
+      console.error(err);
+    }
     setNewsletterSent(true);
     setEmailInput("");
   };

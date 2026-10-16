@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight, CheckCircle2, Award,
   Sparkles, MessageCircle, Heart,
+  TrendingUp, Target, Globe, BarChart3, Check,
 } from "lucide-react";
 import farahImg from "@/assets/farah.jpg";
 import { contact, whatsappLink } from "@/content/site";
@@ -121,6 +122,118 @@ function AboutPage() {
                   Founder & Principal Performance Strategist
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Recent Outcomes Section */}
+      <section className="border-t border-border bg-card py-12 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+            <span className="eyebrow">Recent Outcomes</span>
+            <h2 className="mt-3 font-serif text-2xl sm:text-4xl text-foreground">
+              Numbers That Speak For Themselves
+            </h2>
+            <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+              Real, verified results pulled directly from Meta Ads Manager — not vanity metrics.
+            </p>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+            {[
+              {
+                icon: TrendingUp,
+                stat: "$20,000+",
+                label: "Managed in Meta Ads Spend",
+              },
+              {
+                icon: Target,
+                stat: "1,200+",
+                label: "Qualified Leads Generated Across Multiple Campaigns",
+              },
+              {
+                icon: Globe,
+                stat: "5 Markets",
+                label: "UAE · Saudi Arabia · Qatar · Bahrain · United Kingdom",
+              },
+              {
+                icon: BarChart3,
+                stat: "Data-Driven",
+                label: "Consistently Improving CTR, CPM & CPL Through Systematic Optimization",
+              },
+              {
+                icon: Sparkles,
+                stat: "Beauty & Aesthetics",
+                label: "Strategic Audience Targeting & Creative Testing for Qualified Prospects",
+              },
+            ].map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={idx}
+                  className={`rounded-sm border border-border bg-background p-6 sm:p-8 shadow-xs hover:border-gold transition-colors flex flex-col gap-3 ${idx === 3 ? "sm:col-span-2 lg:col-span-1" : ""}`}
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-gold/15 text-gold">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="font-serif text-2xl sm:text-3xl font-bold text-foreground leading-tight">{item.stat}</p>
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{item.label}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Approach Section */}
+          <div className="grid gap-8 lg:grid-cols-2 items-start">
+            <div className="rounded-sm border border-gold/40 bg-background p-6 sm:p-10 shadow-soft">
+              <h3 className="font-serif text-xl sm:text-2xl text-foreground mb-2">
+                My Approach Goes Beyond Boosting Posts
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                I focus on building systems that attract the right clients, qualify them before they ever reach your inbox, and scale predictably — not short-term spikes.
+              </p>
+              <ul className="space-y-3.5">
+                {[
+                  "Buyer-intent targeting",
+                  "Lead quality optimization",
+                  "Funnel-based campaign structure",
+                  "Retargeting for serious prospects",
+                  "Scalable growth — not short-term spikes",
+                ].map((text, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-sm">
+                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold">
+                      <Check className="h-3 w-3 stroke-[2.5]" />
+                    </div>
+                    <span className="text-foreground font-medium">{text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                {
+                  title: "Buyer-Intent Targeting",
+                  desc: "We don't target 'interests'. We engineer audience layers — lookalikes, custom audiences, and behavioural segments — that identify people actively in a buying mindset for your exact service.",
+                },
+                {
+                  title: "Lead Quality Optimization",
+                  desc: "Cheap leads aren't good leads. We bake qualifying friction into our funnels through pre-qualification questions, price checkpoints, and instant WhatsApp triggers that filter tyre-kickers before they reach you.",
+                },
+                {
+                  title: "Scalable Growth",
+                  desc: "We scale what's proven — not what feels right. Every budget increase is tied to performance data from the preceding creative and audience tests, ensuring predictable cost-per-lead as spend grows.",
+                },
+              ].map((item, idx) => (
+                <div key={idx} className="rounded-sm border border-border bg-card p-5 sm:p-6 hover:border-gold transition-colors">
+                  <h4 className="font-serif text-lg text-foreground mb-2">{item.title}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

@@ -2,14 +2,28 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import {
   Sparkles, Save, RotateCcw, CheckCircle2, MessageCircle,
-  Eye, ShieldCheck, ArrowRight, Settings2, Sliders, Check
+  Eye, EyeOff, ShieldCheck, ArrowRight, Settings2, Lock,
+  Unlock, LogOut, KeyRound, AlertTriangle, ShieldAlert,
+  Clock, Shield, RefreshCw
 } from "lucide-react";
 import {
   getStoredAnnouncement,
   saveAnnouncement,
   resetAnnouncement,
-  type AnnouncementConfig
+  type AnnouncementConfig,
 } from "@/lib/announcementStore";
+import {
+  isSessionActive,
+  loginAdmin,
+  logoutAdmin,
+  changeAdminPassword,
+  resetAdminPasswordToDefault,
+  isUsingDefaultPassword,
+  getLockoutStatus,
+  getLastLoginTimestamp,
+  type LockoutStatus,
+  DEFAULT_ADMIN_PASS,
+} from "@/lib/adminAuth";
 import { whatsappLink } from "@/content/site";
 
 export const Route = createFileRoute("/admin")({
@@ -33,16 +47,149 @@ const PRESET_MONTHS = [
 ];
 
 function AdminPage() {
-  const [config, setConfig] = useState<AnnouncementConfig>(() => getStoredAnnouncement());
-  const [savedSuccess, setSavedSuccess] = useState(false);
-  const [slots, setSlots] = useState("2");
-  const [period, setPeriod] = useState("October – November 2026");
+  // Authentication State
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isInitializing, setIsInitializing] = useState<boolean>(true);
+  const [passkeyInput, setPasskeyInput] = useState<string>("");
+  const [showPasskey, setShowPasskey] = useState<boolean>(false);
+  const [rememberDevice, setRememberDevice] = useState<boolean>(true);
+  const [authError, setAuthError] = useState<string>("");
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
+  const [lockout, setLockout] = useState<LockoutStatus>({
+    isLocked: false,
+    remainingSeconds: 0,
+    attemptsLeft: 5,
+  });
 
-  // Keep local state in sync on mount
+  // Admin Panel Data State
+  const [config, setConfig] = useState<AnnouncementConfig>(() => getStoredAnnouncement());
+  const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
+  const [slots, setSlots] = useState<string>("2");
+  const [period, setPeriod] = useState<string>("October – November 2026");
+
+  // Security Settings Drawer / Modal
+  const [showSecurityModal, setShowSecurityModal] = useState<boolean>(false);
+  const [currentPass, setCurrentPass] = useState<string>("");
+  const [newPass, setNewPass] = useState<string>("");
+  const [confirmPass, setConfirmPass] = useState<string>("");
+  const [passwordChangeMsg, setPasswordChangeMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [isChangingPass, setIsChangingPass] = useState<boolean>(false);
+  const [isDefaultPass, setIsDefaultPass] = useState<boolean>(true);
+  const [lastLogin, setLastLogin] = useState<string | null>(null);
+
+  // Check initial authentication and lockout
   useEffect(() => {
-    const current = getStoredAnnouncement();
-    setConfig(current);
+    setIsAuthenticated(isSessionActive());
+    setLockout(getLockoutStatus());
+    setIsDefaultPass(isUsingDefaultPassword());
+    setLastLogin(getLastLoginTimestamp());
+    setIsInitializing(false);
   }, []);
+
+  // Lockout live countdown timer
+  useEffect(() => {
+    if (!lockout.isLocked || lockout.remainingSeconds <= 0) return;
+
+    const timer = setInterval(() => {
+      setLockout((prev) => {
+        if (prev.remainingSeconds <= 1) {
+          return { isLocked: false, remainingSeconds: 0, attemptsLeft: 5 };
+        }
+        return { ...prev, remainingSeconds: prev.remainingSeconds - 1 };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [lockout.isLocked, lockout.remainingSeconds]);
+
+  // Keep local config in sync on mount
+  useEffect(() => {
+    if (isAuthenticated) {
+      const current = getStoredAnnouncement();
+      setConfig(current);
+    }
+  }, [isAuthenticated]);
+
+  // Handle Login
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!passkeyInput.trim()) {
+      setAuthError("Please enter your administrator passkey.");
+      return;
+    }
+
+    setIsLoggingIn(true);
+    setAuthError("");
+
+    try {
+      const res = await loginAdmin(passkeyInput, rememberDevice);
+      if (res.success) {
+        setIsAuthenticated(true);
+        setPasskeyInput("");
+        setIsDefaultPass(isUsingDefaultPassword());
+        setLastLogin(getLastLoginTimestamp());
+      } else {
+        setAuthError(res.error || "Authentication failed.");
+        if (res.lockout) {
+          setLockout(res.lockout);
+        }
+      }
+    } catch {
+      setAuthError("An unexpected error occurred during authentication.");
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+
+  // Handle Logout
+  const handleLogout = () => {
+    logoutAdmin();
+    setIsAuthenticated(false);
+    setShowSecurityModal(false);
+    setPasskeyInput("");
+    setAuthError("");
+  };
+
+  // Handle Password Change
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordChangeMsg(null);
+
+    if (newPass !== confirmPass) {
+      setPasswordChangeMsg({ type: "error", text: "New passkeys do not match." });
+      return;
+    }
+
+    setIsChangingPass(true);
+    try {
+      const res = await changeAdminPassword(currentPass, newPass);
+      if (res.success) {
+        setPasswordChangeMsg({ type: "success", text: "Master passkey updated successfully!" });
+        setCurrentPass("");
+        setNewPass("");
+        setConfirmPass("");
+        setIsDefaultPass(isUsingDefaultPassword());
+      } else {
+        setPasswordChangeMsg({ type: "error", text: res.error || "Failed to update passkey." });
+      }
+    } catch {
+      setPasswordChangeMsg({ type: "error", text: "Error updating passkey." });
+    } finally {
+      setIsChangingPass(false);
+    }
+  };
+
+  // Handle Reset to Default Password
+  const handleResetPassword = () => {
+    if (confirm("Reset administrator passkey back to factory default ('metahaus2026')?")) {
+      resetAdminPasswordToDefault();
+      setIsDefaultPass(true);
+      setPasswordChangeMsg({
+        type: "success",
+        text: "Passkey has been reset to default ('metahaus2026').",
+      });
+    }
+  };
 
   // Quick apply helper
   const handleApplyPreset = (presetMonth: string) => {
@@ -83,11 +230,372 @@ function AdminPage() {
     }
   };
 
+  // Prevent flicker during initial state check
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+          <RefreshCw className="h-4 w-4 animate-spin text-gold" />
+          <span>Verifying security credentials…</span>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================================================
+  // VIEW 1: SECURE LOGIN GATE (WHEN UNAUTHENTICATED)
+  // ============================================================
+  if (!isAuthenticated) {
+    const minutes = Math.floor(lockout.remainingSeconds / 60);
+    const seconds = lockout.remainingSeconds % 60;
+    const formattedLockout = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+    return (
+      <div className="min-h-screen bg-background flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          {/* Security Shield Icon */}
+          <div className="flex justify-center">
+            <div className="relative flex h-16 w-16 items-center justify-center rounded-full border-2 border-gold/40 bg-card shadow-soft">
+              <Shield className="h-8 w-8 text-gold" />
+              <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary border border-gold/50 text-[10px] text-gold font-bold">
+                <Lock className="h-2.5 w-2.5" />
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-5">
+            <span className="text-[11px] font-bold tracking-widest text-gold uppercase">
+              METAHAUS_BYFARAH
+            </span>
+            <h1 className="mt-1 font-serif text-2xl sm:text-3xl text-foreground font-semibold">
+              Restricted Admin Gateway
+            </h1>
+            <p className="mt-2 text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed">
+              Authorized agency management only. Enter your master passkey to access live controls.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="rounded-sm border border-border bg-card p-6 sm:p-8 shadow-soft">
+            
+            {/* Lockout Warning */}
+            {lockout.isLocked ? (
+              <div className="rounded-sm border border-rose-300 bg-rose-50/80 p-4 text-xs text-rose-800 mb-6">
+                <div className="flex items-center gap-2 font-bold text-rose-900 mb-1">
+                  <ShieldAlert className="h-4 w-4 shrink-0 text-rose-600" />
+                  <span>Security Lockout Active</span>
+                </div>
+                <p>
+                  Maximum consecutive failed attempts reached. Access is suspended for{" "}
+                  <strong className="font-mono font-bold">{formattedLockout}</strong>.
+                </p>
+              </div>
+            ) : null}
+
+            {/* Error Message */}
+            {authError && !lockout.isLocked && (
+              <div className="rounded-sm border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 mb-5 flex items-start gap-2.5 animate-in fade-in">
+                <AlertTriangle className="h-4 w-4 shrink-0 text-rose-600 mt-0.5" />
+                <span className="leading-snug">{authError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleLogin} className="space-y-5">
+              <div>
+                <label
+                  htmlFor="passkey"
+                  className="block text-xs font-bold uppercase tracking-wider text-foreground mb-1.5"
+                >
+                  Administrator Passkey
+                </label>
+                <div className="relative">
+                  <input
+                    id="passkey"
+                    type={showPasskey ? "text" : "password"}
+                    disabled={lockout.isLocked || isLoggingIn}
+                    value={passkeyInput}
+                    onChange={(e) => {
+                      setPasskeyInput(e.target.value);
+                      if (authError) setAuthError("");
+                    }}
+                    placeholder="Enter passkey…"
+                    autoComplete="current-password"
+                    autoFocus
+                    className="w-full rounded-sm border border-input bg-background pl-4 pr-11 py-3 text-sm text-foreground outline-none transition-colors focus:border-gold disabled:opacity-50"
+                  />
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    disabled={lockout.isLocked}
+                    onClick={() => setShowPasskey(!showPasskey)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1"
+                    title={showPasskey ? "Hide passkey" : "Show passkey"}
+                  >
+                    {showPasskey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember device checkbox */}
+              <div className="flex items-center justify-between text-xs">
+                <label className="flex items-center gap-2 text-muted-foreground cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={rememberDevice}
+                    onChange={(e) => setRememberDevice(e.target.checked)}
+                    className="rounded border-border accent-gold h-4 w-4 cursor-pointer"
+                  />
+                  <span>Keep session active for 7 days</span>
+                </label>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={lockout.isLocked || isLoggingIn}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-5 py-3 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-gold hover:text-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-soft"
+              >
+                {isLoggingIn ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 animate-spin" />
+                    <span>Verifying Credentials…</span>
+                  </>
+                ) : (
+                  <>
+                    <Unlock className="h-4 w-4" />
+                    <span>Unlock Admin Panel</span>
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Default Passkey Info Card for Farah */}
+            <div className="mt-6 border-t border-border pt-4">
+              <div className="rounded-sm border border-gold/30 bg-gold/5 p-3 text-[11px] text-muted-foreground">
+                <div className="flex items-center gap-1.5 font-semibold text-foreground mb-1">
+                  <KeyRound className="h-3.5 w-3.5 text-gold" />
+                  <span>First-Time Sign In Key</span>
+                </div>
+                <p className="leading-relaxed">
+                  Default passkey is{" "}
+                  <code className="font-mono font-bold text-foreground bg-background px-1.5 py-0.5 rounded border border-border">
+                    {DEFAULT_ADMIN_PASS}
+                  </code>
+                  . You can change this to any private passkey after signing in.
+                </p>
+              </div>
+            </div>
+
+            {/* Return Link */}
+            <div className="mt-5 text-center">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-gold transition-colors font-medium"
+              >
+                <span>← Return to public website</span>
+              </Link>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================================================
+  // VIEW 2: AUTHENTICATED ADMIN DASHBOARD
+  // ============================================================
   return (
-    <div className="min-h-screen bg-background py-10 sm:py-16">
+    <div className="min-h-screen bg-background py-8 sm:py-12">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        
-        {/* Header Breadcrumb & Title */}
+
+        {/* Top Security & Navigation Bar */}
+        <div className="mb-6 rounded-sm border border-border bg-card p-4 sm:px-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+            </span>
+            <div className="text-xs">
+              <span className="font-bold text-foreground uppercase tracking-wider">
+                Admin Session Active
+              </span>
+              <span className="text-muted-foreground ml-2 hidden sm:inline">
+                {isDefaultPass ? (
+                  <span className="text-amber-700 font-medium">· Using default passkey</span>
+                ) : (
+                  <span className="text-emerald-700 font-medium">· Custom encrypted passkey</span>
+                )}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 self-end sm:self-auto">
+            <button
+              type="button"
+              onClick={() => {
+                setShowSecurityModal(!showSecurityModal);
+                setPasswordChangeMsg(null);
+              }}
+              className={`inline-flex items-center gap-1.5 rounded-sm border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                showSecurityModal
+                  ? "border-gold bg-gold/15 text-gold-dark"
+                  : "border-border bg-background text-foreground hover:border-gold hover:text-gold"
+              }`}
+            >
+              <KeyRound className="h-3.5 w-3.5 text-gold" />
+              <span>Security & Passkey</span>
+            </button>
+
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground hover:border-gold hover:text-gold transition-colors"
+            >
+              <span>Live Site</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 rounded-sm border border-rose-200 bg-rose-50/60 px-3 py-1.5 text-xs font-bold text-rose-700 hover:bg-rose-100 transition-colors"
+              title="Terminate admin session"
+            >
+              <LogOut className="h-3.5 w-3.5" />
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Security Settings Section (Toggleable) */}
+        {showSecurityModal && (
+          <div className="mb-8 rounded-sm border border-gold/40 bg-card p-6 shadow-soft animate-in fade-in slide-in-from-top-2">
+            <div className="flex items-center justify-between border-b border-border pb-4 mb-5">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-5 w-5 text-gold" />
+                <h3 className="font-serif text-lg font-semibold text-foreground">
+                  Security & Administrator Passkey Settings
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSecurityModal(false)}
+                className="text-xs text-muted-foreground hover:text-foreground font-semibold"
+              >
+                ✕ Close
+              </button>
+            </div>
+
+            {isDefaultPass && (
+              <div className="mb-5 rounded-sm border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 flex items-start gap-2">
+                <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 mt-0.5" />
+                <div>
+                  <strong className="font-semibold block">Security Recommendation:</strong>
+                  Your account is currently using the factory default passkey (<code>{DEFAULT_ADMIN_PASS}</code>). For maximum security, we recommend setting a private passkey below.
+                </div>
+              </div>
+            )}
+
+            {passwordChangeMsg && (
+              <div
+                className={`mb-5 rounded-sm border p-3 text-xs flex items-center gap-2 ${
+                  passwordChangeMsg.type === "success"
+                    ? "border-emerald-300 bg-emerald-50 text-emerald-800"
+                    : "border-rose-300 bg-rose-50 text-rose-800"
+                }`}
+              >
+                {passwordChangeMsg.type === "success" ? (
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                ) : (
+                  <AlertTriangle className="h-4 w-4 text-rose-600 shrink-0" />
+                )}
+                <span>{passwordChangeMsg.text}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleChangePassword} className="space-y-4">
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
+                    Current Passkey
+                  </label>
+                  <input
+                    type="password"
+                    value={currentPass}
+                    onChange={(e) => setCurrentPass(e.target.value)}
+                    placeholder="Current passkey"
+                    required
+                    className="w-full rounded-sm border border-input bg-background px-3 py-2 text-xs text-foreground outline-none focus:border-gold"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
+                    New Passkey (min 8 chars)
+                  </label>
+                  <input
+                    type="password"
+                    value={newPass}
+                    onChange={(e) => setNewPass(e.target.value)}
+                    placeholder="New private passkey"
+                    required
+                    minLength={8}
+                    className="w-full rounded-sm border border-input bg-background px-3 py-2 text-xs text-foreground outline-none focus:border-gold"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
+                    Confirm New Passkey
+                  </label>
+                  <input
+                    type="password"
+                    value={confirmPass}
+                    onChange={(e) => setConfirmPass(e.target.value)}
+                    placeholder="Retype new passkey"
+                    required
+                    minLength={8}
+                    className="w-full rounded-sm border border-input bg-background px-3 py-2 text-xs text-foreground outline-none focus:border-gold"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="submit"
+                    disabled={isChangingPass}
+                    className="inline-flex items-center gap-1.5 rounded-sm bg-primary px-4 py-2 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-gold hover:text-primary transition-all disabled:opacity-50"
+                  >
+                    <Save className="h-3.5 w-3.5" />
+                    <span>{isChangingPass ? "Updating…" : "Save New Passkey"}</span>
+                  </button>
+
+                  {!isDefaultPass && (
+                    <button
+                      type="button"
+                      onClick={handleResetPassword}
+                      className="inline-flex items-center gap-1.5 rounded-sm border border-border px-3 py-2 text-xs text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+                    >
+                      <RotateCcw className="h-3 w-3" />
+                      <span>Reset to Factory Default</span>
+                    </button>
+                  )}
+                </div>
+
+                {lastLogin && (
+                  <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    Last session initiated: {new Date(lastLogin).toLocaleString()}
+                  </span>
+                )}
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* Dashboard Title */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
           <div>
             <div className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-gold font-semibold">
@@ -101,14 +609,6 @@ function AdminPage() {
               Easily change the monthly availability banner on your header without touching code.
             </p>
           </div>
-
-          <Link
-            to="/"
-            className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-sm border border-border bg-card px-4 py-2 text-xs font-semibold text-foreground hover:border-gold hover:text-gold transition-colors shadow-xs"
-          >
-            <span>View Live Website</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
         </div>
 
         {/* Live Preview Bar */}
@@ -156,12 +656,17 @@ function AdminPage() {
         </div>
 
         {/* Form Controls */}
-        <form onSubmit={handleSave} className="mt-8 space-y-6 rounded-sm border border-border bg-card p-6 sm:p-8 shadow-xs">
-          
+        <form
+          onSubmit={handleSave}
+          className="mt-8 space-y-6 rounded-sm border border-border bg-card p-6 sm:p-8 shadow-xs"
+        >
           {/* Toggle Banner */}
           <div className="flex items-center justify-between border-b border-border pb-5">
             <div>
-              <label htmlFor="banner-enabled" className="font-serif text-lg font-medium text-foreground block cursor-pointer">
+              <label
+                htmlFor="banner-enabled"
+                className="font-serif text-lg font-medium text-foreground block cursor-pointer"
+              >
                 Enable Announcement Ribbon
               </label>
               <p className="text-xs text-muted-foreground">
@@ -306,7 +811,11 @@ function AdminPage() {
             <span>Permanent Code Location (Optional)</span>
           </div>
           <p className="leading-relaxed">
-            Changes saved here are active immediately in the browser. If you ever want to permanently bake your new months into source code, simply copy this into <code className="bg-card px-1.5 py-0.5 rounded border border-border font-mono text-[11px] text-foreground">src/content/site.ts</code>:
+            Changes saved here are active immediately in the browser. If you ever want to permanently bake your new months into source code, simply copy this into{" "}
+            <code className="bg-card px-1.5 py-0.5 rounded border border-border font-mono text-[11px] text-foreground">
+              src/content/site.ts
+            </code>
+            :
           </p>
           <pre className="mt-3 overflow-x-auto rounded-sm bg-slate-950 p-3.5 font-mono text-[11px] text-slate-200 border border-slate-800">
 {`export const announcement = {

@@ -1,29 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   MessageCircle, Mail, Instagram, Linkedin, ArrowRight,
-  Clock, ShieldCheck, CheckCircle2,
+  ShieldCheck, CheckCircle2,
 } from "lucide-react";
 import { contact, whatsappLink } from "@/content/site";
 
 export function Footer() {
-  const [times, setTimes] = useState({ dubai: "--:--", london: "--:--" });
   const [newsletterSent, setNewsletterSent] = useState(false);
   const [emailInput, setEmailInput] = useState("");
-
-  useEffect(() => {
-    const updateClocks = () => {
-      const now = new Date();
-      const fmt = (tz: string) =>
-        new Intl.DateTimeFormat("en-GB", {
-          hour: "2-digit", minute: "2-digit", timeZone: tz, hour12: false,
-        }).format(now);
-      setTimes({ dubai: fmt("Asia/Dubai"), london: fmt("Europe/London") });
-    };
-    updateClocks();
-    const timer = setInterval(updateClocks, 30000);
-    return () => clearInterval(timer);
-  }, []);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,26 +36,6 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-card pt-10 pb-8 text-foreground">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-
-        {/* Hub Clocks — compact on mobile */}
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-sm border border-border bg-background/60 px-4 py-3 text-xs">
-          <div className="flex items-center gap-1.5 font-semibold uppercase tracking-widest text-muted-foreground">
-            <Clock className="h-3.5 w-3.5 text-gold" />
-            <span className="hidden sm:inline">Active Hubs:</span>
-          </div>
-          <div className="flex flex-wrap gap-4">
-            <div className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              <span className="text-foreground font-medium">Dubai</span>
-              <span className="font-mono text-gold font-semibold">{times.dubai}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              <span className="text-foreground font-medium">London</span>
-              <span className="font-mono text-gold font-semibold">{times.london}</span>
-            </div>
-          </div>
-        </div>
 
         {/* Grid: 2-col on sm, 4-col on lg */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 pb-10 border-b border-border">

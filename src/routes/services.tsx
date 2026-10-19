@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
   ArrowRight, Target, Megaphone, BarChart3, ShoppingBag,
   FlaskConical, LineChart, Check, Sparkles, HelpCircle, ChevronDown,
+  TrendingUp, ShieldCheck, Award, MessageCircle, CheckCircle2,
 } from "lucide-react";
 import { services, faqs, whatsappLink } from "@/content/site";
 import { LiveStatsTicker } from "@/components/common/LiveStatsTicker";
@@ -149,25 +150,57 @@ function ServicesPage() {
       </section>
 
       {/* Website Development Section */}
-      <section className="py-12 sm:py-20 bg-card border-t border-border">
+      <section id="website-development" className="py-12 sm:py-20 bg-card border-t border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-8">
             <div>
-              <span className="eyebrow">New Service</span>
-              <h2 className="mt-3 font-serif text-2xl sm:text-4xl text-foreground">
+              <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3.5 py-1 text-xs text-gold font-semibold uppercase tracking-widest mb-3">
+                <Sparkles className="h-3 w-3 text-gold" />
+                <span>Dedicated Development Service</span>
+              </div>
+              <h2 className="mt-1 font-serif text-2xl sm:text-4xl text-foreground">
                 Website & Landing Page Development
               </h2>
               <p className="mt-3 text-sm text-muted-foreground max-w-xl leading-relaxed">
-                Performance-first websites built to complement your Meta Ads strategy. We create bespoke, luxury-feel digital presences that convert paid traffic into real bookings for beauty, bridal, and aesthetic brands.
+                Performance-first websites built to convert beauty, bridal, and clinic traffic into real bookings. We create bespoke, luxury-feel digital presences engineered with lightning-fast speeds, pixel-perfect aesthetics, and seamless Meta Ads integration.
               </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {[
+                  "Custom Web Architecture",
+                  "High-Converting Landing Pages",
+                  "E-Commerce & Storefronts",
+                  "Meta Pixel & CAPI Sync",
+                  "Website Maintenance & Speed",
+                  "WhatsApp & CRM Lead Flows",
+                ].map((pill) => (
+                  <span
+                    key={pill}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-[11px] font-medium text-foreground"
+                  >
+                    <CheckCircle2 className="h-3 w-3 text-gold" />
+                    {pill}
+                  </span>
+                ))}
+              </div>
             </div>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 rounded-sm bg-primary px-6 py-3 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-gold hover:text-primary transition-colors shrink-0"
-            >
-              <span>Get a Web Development Quote</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <a
+                href={whatsappLink("Hello Farah, I'd like to discuss website development for my brand.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-sm border border-emerald-500/40 bg-emerald-500/10 px-5 py-3 text-xs font-bold uppercase tracking-wider text-emerald-600 hover:bg-emerald-500/20 transition-colors"
+              >
+                <MessageCircle className="h-3.5 w-3.5" />
+                <span>WhatsApp Quote</span>
+              </a>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 rounded-sm bg-primary px-6 py-3 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-gold hover:text-primary transition-colors"
+              >
+                <span>Get a Web Development Quote</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
 
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
@@ -314,6 +347,79 @@ function ServicesPage() {
               </div>
             </article>
           </div>
+
+          {/* 4 Execution Pillars */}
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                icon: TrendingUp,
+                title: "Fast Execution",
+                desc: "Rapid deployment with clean strategy, modern stack & engineering",
+              },
+              {
+                icon: ShieldCheck,
+                title: "Transparent Pricing",
+                desc: "No hidden fees, scope creep or surprises — clear upfront packages",
+              },
+              {
+                icon: Award,
+                title: "Dedicated Support",
+                desc: "Ongoing post-launch warranty, care & technical maintenance included",
+              },
+              {
+                icon: Sparkles,
+                title: "High Conversions",
+                desc: "Aesthetic beauty-first UI built specifically to convert paid ad traffic",
+              },
+            ].map((card) => {
+              const Icon = card.icon;
+              return (
+                <div
+                  key={card.title}
+                  className="flex items-start gap-3.5 rounded-sm border border-border bg-background p-4 shadow-xs"
+                >
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm bg-primary/5 text-gold border border-gold/30">
+                    <Icon className="h-4 w-4 text-gold" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">{card.title}</h4>
+                    <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{card.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Custom Web Project Banner */}
+          <div className="mt-8 rounded-sm border border-border bg-background p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h4 className="font-serif text-lg text-foreground font-semibold">
+                Need a custom web application, migration, or Shopify store?
+              </h4>
+              <p className="text-xs text-muted-foreground mt-1">
+                We handle bespoke architectural builds, booking system integrations, and full redesigns for established beauty brands.
+              </p>
+            </div>
+            <div className="flex items-center gap-2.5 shrink-0">
+              <a
+                href={whatsappLink("Hello Farah, I'd like to discuss a custom web development project for my brand.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-sm border border-emerald-500/40 bg-emerald-500/10 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-emerald-600 hover:bg-emerald-500/20 transition-colors"
+              >
+                <MessageCircle className="h-3.5 w-3.5" />
+                <span>WhatsApp</span>
+              </a>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 rounded-sm bg-primary px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-gold hover:text-primary transition-colors"
+              >
+                <span>Discuss Scope</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          </div>
+
         </div>
       </section>
 

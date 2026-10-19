@@ -32,7 +32,8 @@ const industriesList = [
 ];
 
 const budgetRanges = [
-  "$1,200 – $2,500 / month (£1k – £2k)",
+  "$800 – $1,500 / month (£600 – £1.2k)",
+  "$1,500 – $2,500 / month (£1.2k – £2k)",
   "$2,500 – $5,000 / month (£2k – £4k)",
   "$5,000 – $10,000 / month (£4k – £8k)",
   "$10,000+ / month (£8k+)",

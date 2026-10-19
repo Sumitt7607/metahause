@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  ArrowRight, ArrowUpRight, Check, CheckCircle2,
-  Sparkles, ChevronRight, Eye, ShieldCheck,
-  TrendingUp, MessageCircle, PhoneCall, Award,
+  ArrowRight, ArrowUpRight, ShieldCheck,
+  TrendingUp, MessageCircle,
 } from "lucide-react";
 import heroImg from "@/assets/hero-beauty.jpg";
 import bridalImg from "@/assets/bridal.jpg";
@@ -317,132 +316,7 @@ function HomePage() {
         </div>
       </section>
 
-      {/* 5. WEBSITE DEVELOPMENT */}
-      <section
-        className="relative overflow-hidden border-t border-border py-14 sm:py-20"
-        style={{ background: "linear-gradient(135deg, #0c0a10 0%, #100c1a 100%)" }}
-      >
-        {/* Ambient glow */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 left-1/3 h-72 w-72 rounded-full bg-gold/10 blur-[80px]" />
-          <div className="absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-purple-500/10 blur-[70px]" />
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-2 items-center">
-
-            {/* LEFT */}
-            <div>
-              {/* Label */}
-              <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-white/5 px-4 py-1.5 mb-6">
-                <Sparkles className="h-3 w-3 text-gold" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-gold">Service Overview</span>
-              </div>
-
-              {/* Headline */}
-              <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-white leading-tight">
-                Website{" "}
-                <span className="gold-gradient-text italic">Development</span>
-              </h2>
-              <p className="mt-4 text-sm text-white/50 leading-relaxed max-w-md">
-                High-performance custom websites built to convert beauty brand traffic into real bookings.
-              </p>
-
-              {/* Services list box */}
-              <div className="mt-7 rounded-xl border border-white/10 bg-white/4 p-5">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-gold mb-4">Our Services</p>
-                <div className="grid grid-cols-2 gap-y-3 gap-x-6">
-                  {[
-                    "Website Development",
-                    "E-Commerce Development",
-                    "Website Maintenance",
-                    "Custom Web Applications",
-                    "High-Converting Landing Pages",
-                    "and much more...",
-                  ].map((item) => (
-                    <div key={item} className="flex items-center gap-2 text-xs text-white/70">
-                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-gold" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* CTAs */}
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Link
-                  to="/services"
-                  className="inline-flex items-center gap-2 rounded-lg bg-gold px-5 py-3 text-xs font-bold uppercase tracking-wider text-primary shadow-lg shadow-gold/25 hover:bg-gold-soft hover:scale-[1.02] transition-all duration-200"
-                >
-                  See Pricing Plans
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-                <a
-                  href={whatsappLink()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-5 py-3 text-xs font-bold uppercase tracking-wider text-emerald-400 hover:bg-emerald-500/20 transition-all duration-200"
-                >
-                  <MessageCircle className="h-3.5 w-3.5" />
-                  WhatsApp Now
-                </a>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white/60 hover:border-gold/40 hover:text-gold transition-all duration-200"
-                >
-                  <PhoneCall className="h-3.5 w-3.5" />
-                  Book a Call
-                </Link>
-              </div>
-            </div>
-
-            {/* RIGHT — 4 feature cards */}
-            <div className="grid grid-cols-1 gap-3">
-              {[
-                {
-                  icon: TrendingUp,
-                  title: "Fast Execution",
-                  desc: "Rapid deployment with clean strategy & engineering",
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "Transparent Pricing",
-                  desc: "No hidden fees, simple upfront packages",
-                },
-                {
-                  icon: Award,
-                  title: "Dedicated Support",
-                  desc: "Ongoing care & maintenance included",
-                },
-                {
-                  icon: Sparkles,
-                  title: "High Conversions",
-                  desc: "Designed & optimised for maximum ROI",
-                },
-              ].map((card) => {
-                const Icon = card.icon;
-                return (
-                  <div
-                    key={card.title}
-                    className="flex items-center gap-4 rounded-xl border border-white/8 bg-white/4 px-5 py-4 hover:border-gold/30 hover:bg-white/6 transition-all duration-200"
-                  >
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gold/20 bg-gold/10">
-                      <Icon className="h-5 w-5 text-gold" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-white">{card.title}</p>
-                      <p className="text-xs text-white/45 mt-0.5">{card.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-
+      {/* 5. INDUSTRY FOCUS */}
       <section className="border-t border-border bg-background py-12 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid gap-8 lg:gap-12 lg:grid-cols-2 items-center">

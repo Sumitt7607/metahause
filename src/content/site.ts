@@ -598,7 +598,7 @@ export const faqs = [
   },
   {
     q: "What ad budget do I need to get started?",
-    a: "For local service providers (bridal artists, aesthetic clinics, salons), we recommend a minimum ad budget of £1,000 – £2,000 / month ($1,200 – $2,500 / month) to give Meta's algorithm sufficient data to optimize efficiently.",
+    a: "For local service providers (bridal artists, aesthetic clinics, salons), we recommend a minimum ad budget of £600 – £1,200 / month ($800 – $1,500 / month) to give Meta's algorithm sufficient data to optimize efficiently.",
   },
   {
     q: "Why work with Farah directly rather than a large generalist agency?",

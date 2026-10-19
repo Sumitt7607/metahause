@@ -2,10 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowRight, MessageCircle, Mail, Instagram,
-  Linkedin, CheckCircle2, ShieldCheck, Clock, MapPin, Phone, Loader2,
+  Linkedin, CheckCircle2, ShieldCheck, Clock, Phone, Loader2,
 } from "lucide-react";
 import { contact, whatsappLink, services } from "@/content/site";
 import { LiveStatsTicker } from "@/components/common/LiveStatsTicker";
+import { trackLead } from "@/lib/tracking";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -98,10 +99,18 @@ function ContactPage() {
           _captcha: "false",
         }),
       });
+      trackLead({
+        content_name: `Strategy Consultation (${formData.business || formData.name})`,
+        content_category: formData.industry || "General Consultation",
+      });
       setSubmitted(true);
     } catch (err) {
       console.error("Form submission error:", err);
       // Still show confirmation so user knows their intake is recorded
+      trackLead({
+        content_name: `Strategy Consultation (${formData.business || formData.name})`,
+        content_category: formData.industry || "General Consultation",
+      });
       setSubmitted(true);
     } finally {
       setIsSubmitting(false);
@@ -221,13 +230,7 @@ function ContactPage() {
                     </a>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 pt-2 border-t border-border">
-                  <MapPin className="h-4 w-4 text-gold shrink-0" />
-                  <div>
-                    <span className="text-foreground font-medium block">Operating Hubs:</span>
-                    <span>Dubai (UAE) & London (UK)</span>
-                  </div>
-                </div>
+
               </div>
 
               <div className="rounded-sm bg-secondary/50 p-5 border border-border text-xs text-muted-foreground space-y-2">

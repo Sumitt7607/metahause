@@ -48,12 +48,19 @@ export function resetAnnouncement(): AnnouncementConfig {
 }
 
 export function useAnnouncement(): AnnouncementConfig {
-  const [config, setConfig] = useState<AnnouncementConfig>(() => getStoredAnnouncement());
+  // SSR-safe: start with defaults (server has no localStorage).
+  // The useEffect below immediately reads localStorage on client mount,
+  // which overwrites the SSR defaults with the saved config.
+  const [config, setConfig] = useState<AnnouncementConfig>(defaultAnnouncement);
 
   useEffect(() => {
     const handleUpdate = () => {
       setConfig(getStoredAnnouncement());
     };
+
+    // Read localStorage immediately on mount — this is what makes the saved
+    // config appear after SSR hydration instead of the hardcoded defaults.
+    handleUpdate();
 
     window.addEventListener(EVENT_NAME, handleUpdate);
     window.addEventListener("storage", handleUpdate);

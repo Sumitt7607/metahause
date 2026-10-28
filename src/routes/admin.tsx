@@ -46,6 +46,16 @@ const PRESET_MONTHS = [
   "Summer 2027",
 ];
 
+// Parse slots and period from the saved config message so they survive page reloads.
+// Message format: "Now accepting <slots> new brand partners for <period>."
+function parseSlotsAndPeriod(message: string): { slots: string; period: string } {
+  const match = message.match(/^Now accepting (.+?) new brand partners for (.+?)\.?$/);
+  if (match && match[1] && match[2]) {
+    return { slots: match[1], period: match[2] };
+  }
+  return { slots: "2", period: "October \u2013 November 2026" };
+}
+
 function AdminPage() {
   // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -61,11 +71,12 @@ function AdminPage() {
     attemptsLeft: 5,
   });
 
-  // Admin Panel Data State
+  // Admin Panel Data State — config is read from localStorage on first render.
+  // slots and period are parsed from the saved message so they match after a reload.
   const [config, setConfig] = useState<AnnouncementConfig>(() => getStoredAnnouncement());
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
-  const [slots, setSlots] = useState<string>("2");
-  const [period, setPeriod] = useState<string>("October – November 2026");
+  const [slots, setSlots] = useState<string>(() => parseSlotsAndPeriod(getStoredAnnouncement().message).slots);
+  const [period, setPeriod] = useState<string>(() => parseSlotsAndPeriod(getStoredAnnouncement().message).period);
 
   // Security Settings Drawer / Modal
   const [showSecurityModal, setShowSecurityModal] = useState<boolean>(false);
@@ -102,11 +113,14 @@ function AdminPage() {
     return () => clearInterval(timer);
   }, [lockout.isLocked, lockout.remainingSeconds]);
 
-  // Keep local config in sync on mount
+  // Keep local config in sync on mount, and re-parse slots/period from saved message
   useEffect(() => {
     if (isAuthenticated) {
       const current = getStoredAnnouncement();
       setConfig(current);
+      const parsed = parseSlotsAndPeriod(current.message);
+      setSlots(parsed.slots);
+      setPeriod(parsed.period);
     }
   }, [isAuthenticated]);
 

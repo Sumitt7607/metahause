@@ -42,9 +42,9 @@ export const contact = {
 export const announcement = {
   enabled: true,
   badge: "Live:",
-  message: "Now accepting 2 new brand partners for October – November 2026.",
+  message: "Now accepting 2 new brand partners for October – November 2029.",
   whatsappMessage:
-    "Hello Farah, I'd like to check your availability for October – November campaign management.",
+    "Hello Farah, I'd like to check your availability for October – November 2029 campaign management.",
 };
 
 export const whatsappLink = (customMessage?: string) =>

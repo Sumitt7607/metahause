@@ -4,9 +4,12 @@ import {
   Sparkles, Save, RotateCcw, CheckCircle2, MessageCircle,
   Eye, EyeOff, ShieldCheck, ArrowRight, Settings2, Lock,
   Unlock, LogOut, KeyRound, AlertTriangle, ShieldAlert,
-  Clock, Shield, RefreshCw, Globe
+  Clock, Shield, RefreshCw, Globe, Check
 } from "lucide-react";
-import { deployAnnouncementFn } from "@/lib/announcementFn";
+import {
+  deployAnnouncementUniversal,
+  GITHUB_TOKEN_KEY,
+} from "@/lib/announcementFn";
 import {
   getStoredAnnouncement,
   saveAnnouncement,
@@ -83,6 +86,9 @@ function AdminPage() {
   type DeployStatus = "idle" | "deploying" | "success" | "error";
   const [deployStatus, setDeployStatus] = useState<DeployStatus>("idle");
   const [deployError, setDeployError] = useState<string>("");
+  const [githubToken, setGithubToken] = useState<string>("");
+  const [tokenSaveNotice, setTokenSaveNotice] = useState<boolean>(false);
+  const [showTokenInput, setShowTokenInput] = useState<boolean>(false);
 
   // Security Settings Drawer / Modal
   const [showSecurityModal, setShowSecurityModal] = useState<boolean>(false);
@@ -100,8 +106,25 @@ function AdminPage() {
     setLockout(getLockoutStatus());
     setIsDefaultPass(isUsingDefaultPassword());
     setLastLogin(getLastLoginTimestamp());
+    if (typeof window !== "undefined") {
+      const savedTok = localStorage.getItem(GITHUB_TOKEN_KEY) || "";
+      setGithubToken(savedTok);
+    }
     setIsInitializing(false);
   }, []);
+
+  const handleSaveToken = (val: string) => {
+    setGithubToken(val);
+    if (typeof window !== "undefined") {
+      if (val.trim()) {
+        localStorage.setItem(GITHUB_TOKEN_KEY, val.trim());
+      } else {
+        localStorage.removeItem(GITHUB_TOKEN_KEY);
+      }
+      setTokenSaveNotice(true);
+      setTimeout(() => setTokenSaveNotice(false), 3000);
+    }
+  };
 
   // Lockout live countdown timer
   useEffect(() => {
@@ -245,7 +268,11 @@ function AdminPage() {
     setDeployError("");
 
     try {
-      const result = await deployAnnouncementFn({ data: config });
+      const result = await deployAnnouncementUniversal({
+        ...config,
+        githubToken: githubToken.trim() || undefined,
+      });
+
       if (result.success) {
         setDeployStatus("success");
         setTimeout(() => setDeployStatus("idle"), 10000);
@@ -873,17 +900,71 @@ function AdminPage() {
               </div>
             </div>
 
+            {/* GitHub Deployment Integration Card */}
+            <div className="mt-2 rounded-sm border border-border bg-secondary/40 p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <div className={`h-2.5 w-2.5 rounded-full ${githubToken ? "bg-emerald-500 animate-pulse" : "bg-amber-500"}`} />
+                  <span className="text-xs font-semibold text-foreground">
+                    {githubToken ? "GitHub Live Auto-Deploy: Connected" : "GitHub Live Auto-Deploy: Token Needed"}
+                  </span>
+                  <span className="text-[11px] text-muted-foreground hidden sm:inline">
+                    (Repo: Sumitt7607/metahause)
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowTokenInput(!showTokenInput)}
+                  className="text-xs text-gold hover:underline font-medium text-left sm:text-right"
+                >
+                  {showTokenInput ? "Hide Token Settings" : githubToken ? "Manage / Change Token" : "Enter GitHub Token"}
+                </button>
+              </div>
+
+              {(!githubToken || showTokenInput) && (
+                <div className="mt-3 pt-3 border-t border-border/60 space-y-2">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block">
+                    GitHub Personal Access Token (PAT):
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="password"
+                      value={githubToken}
+                      onChange={(e) => setGithubToken(e.target.value)}
+                      placeholder="github_pat_..."
+                      className="flex-1 rounded-sm border border-input bg-background px-3 py-2 text-xs font-mono text-foreground focus:border-gold focus:outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleSaveToken(githubToken)}
+                      className="rounded-sm bg-primary px-3 py-2 text-xs font-bold text-primary-foreground hover:bg-gold hover:text-primary transition-colors flex items-center gap-1.5"
+                    >
+                      <Check className="h-3.5 w-3.5" />
+                      <span>Save Token</span>
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-[11px] text-muted-foreground">
+                      Stored privately in your browser. Enables clicking "Save & Deploy" to publish directly to your live domain.
+                    </p>
+                    {tokenSaveNotice && (
+                      <span className="text-[11px] text-emerald-600 font-bold flex items-center gap-1">
+                        <CheckCircle2 className="h-3 w-3" /> Saved!
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* GitHub token setup hint */}
-            {deployStatus === "error" && deployError.includes("GITHUB_TOKEN") && (
+            {deployStatus === "error" && !githubToken && (
               <div className="rounded-sm border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900">
-                <p className="font-bold mb-1">⚡ One-time setup required:</p>
-                <ol className="list-decimal list-inside space-y-1 text-amber-800">
-                  <li>Go to <strong>github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)</strong></li>
-                  <li>Generate a new token with <code className="bg-amber-100 px-1 rounded">repo</code> scope</li>
-                  <li>Copy the token</li>
-                  <li>In <strong>Lovable → Project Settings → Environment Variables</strong>, add: <code className="bg-amber-100 px-1 rounded">GITHUB_TOKEN = &lt;your token&gt;</code></li>
-                  <li>Redeploy once — then this button will work automatically forever.</li>
-                </ol>
+                <p className="font-bold mb-1">⚡ Connect your token above to deploy live:</p>
+                <p className="text-amber-800 leading-relaxed">
+                  Paste your GitHub token in the box above and click <strong>Save Token</strong>. Once saved, clicking <strong>Save & Deploy to Live Site</strong> will automatically update the live banner for every visitor worldwide in 1–2 minutes!
+                </p>
               </div>
             )}
           </div>

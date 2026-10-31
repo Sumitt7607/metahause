@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
 import { announcement as defaultAnnouncement } from "@/content/site";
+import { getLiveAnnouncementFn, type AnnouncementConfig } from "./announcementDb";
 
-export type AnnouncementConfig = {
-  enabled: boolean;
-  badge: string;
-  message: string;
-  whatsappMessage: string;
-};
+export type { AnnouncementConfig };
 
 const STORAGE_KEY = "metahaus_announcement_config";
 const EVENT_NAME = "metahaus_announcement_change";
@@ -48,19 +44,29 @@ export function resetAnnouncement(): AnnouncementConfig {
 }
 
 export function useAnnouncement(): AnnouncementConfig {
-  // SSR-safe: start with defaults (server has no localStorage).
-  // The useEffect below immediately reads localStorage on client mount,
-  // which overwrites the SSR defaults with the saved config.
-  const [config, setConfig] = useState<AnnouncementConfig>(defaultAnnouncement);
+  const [config, setConfig] = useState<AnnouncementConfig>(() => getStoredAnnouncement());
 
   useEffect(() => {
+    // 1. Sync with local cache first
+    const cached = getStoredAnnouncement();
+    setConfig(cached);
+
+    // 2. Fetch fresh live announcement from MongoDB
+    getLiveAnnouncementFn()
+      .then((live) => {
+        if (live && live.message) {
+          saveAnnouncement(live);
+          setConfig(live);
+        }
+      })
+      .catch((err) => {
+        console.warn("[Announcement] Using cached config:", err);
+      });
+
+    // 3. Listen to local changes across components or browser tabs
     const handleUpdate = () => {
       setConfig(getStoredAnnouncement());
     };
-
-    // Read localStorage immediately on mount — this is what makes the saved
-    // config appear after SSR hydration instead of the hardcoded defaults.
-    handleUpdate();
 
     window.addEventListener(EVENT_NAME, handleUpdate);
     window.addEventListener("storage", handleUpdate);

@@ -4,17 +4,18 @@ import {
   Sparkles, Save, RotateCcw, CheckCircle2, MessageCircle,
   Eye, EyeOff, ShieldCheck, ArrowRight, Settings2, Lock,
   Unlock, LogOut, KeyRound, AlertTriangle, ShieldAlert,
-  Clock, Shield, RefreshCw, Globe, Check
+  Clock, Shield, RefreshCw, Database, Check
 } from "lucide-react";
 import {
-  deployAnnouncementUniversal,
-  GITHUB_TOKEN_KEY,
-} from "@/lib/announcementFn";
+  saveLiveAnnouncementFn,
+  getLiveAnnouncementFn,
+  resetLiveAnnouncementFn,
+  type AnnouncementConfig,
+} from "@/lib/announcementDb";
 import {
   getStoredAnnouncement,
   saveAnnouncement,
   resetAnnouncement,
-  type AnnouncementConfig,
 } from "@/lib/announcementStore";
 import {
   isSessionActive,
@@ -75,20 +76,16 @@ function AdminPage() {
     attemptsLeft: 5,
   });
 
-  // Admin Panel Data State — config is read from localStorage on first render.
-  // slots and period are parsed from the saved message so they match after a reload.
+  // Admin Panel Data State
   const [config, setConfig] = useState<AnnouncementConfig>(() => getStoredAnnouncement());
-  const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
   const [slots, setSlots] = useState<string>(() => parseSlotsAndPeriod(getStoredAnnouncement().message).slots);
   const [period, setPeriod] = useState<string>(() => parseSlotsAndPeriod(getStoredAnnouncement().message).period);
 
-  // Deploy state — tracks the GitHub API commit lifecycle
-  type DeployStatus = "idle" | "deploying" | "success" | "error";
-  const [deployStatus, setDeployStatus] = useState<DeployStatus>("idle");
-  const [deployError, setDeployError] = useState<string>("");
-  const [githubToken, setGithubToken] = useState<string>("");
-  const [tokenSaveNotice, setTokenSaveNotice] = useState<boolean>(false);
-  const [showTokenInput, setShowTokenInput] = useState<boolean>(false);
+  // Live Database Sync State
+  type SaveStatus = "idle" | "saving" | "success" | "error";
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
+  const [saveError, setSaveError] = useState<string>("");
+  const [isLoadingDb, setIsLoadingDb] = useState<boolean>(false);
 
   // Security Settings Drawer / Modal
   const [showSecurityModal, setShowSecurityModal] = useState<boolean>(false);
@@ -106,25 +103,8 @@ function AdminPage() {
     setLockout(getLockoutStatus());
     setIsDefaultPass(isUsingDefaultPassword());
     setLastLogin(getLastLoginTimestamp());
-    if (typeof window !== "undefined") {
-      const savedTok = localStorage.getItem(GITHUB_TOKEN_KEY) || "";
-      setGithubToken(savedTok);
-    }
     setIsInitializing(false);
   }, []);
-
-  const handleSaveToken = (val: string) => {
-    setGithubToken(val);
-    if (typeof window !== "undefined") {
-      if (val.trim()) {
-        localStorage.setItem(GITHUB_TOKEN_KEY, val.trim());
-      } else {
-        localStorage.removeItem(GITHUB_TOKEN_KEY);
-      }
-      setTokenSaveNotice(true);
-      setTimeout(() => setTokenSaveNotice(false), 3000);
-    }
-  };
 
   // Lockout live countdown timer
   useEffect(() => {
@@ -142,14 +122,31 @@ function AdminPage() {
     return () => clearInterval(timer);
   }, [lockout.isLocked, lockout.remainingSeconds]);
 
-  // Keep local config in sync on mount, and re-parse slots/period from saved message
+  // Load latest announcement config from MongoDB on login
   useEffect(() => {
     if (isAuthenticated) {
-      const current = getStoredAnnouncement();
-      setConfig(current);
-      const parsed = parseSlotsAndPeriod(current.message);
-      setSlots(parsed.slots);
-      setPeriod(parsed.period);
+      setIsLoadingDb(true);
+      getLiveAnnouncementFn()
+        .then((live) => {
+          if (live && live.message) {
+            setConfig(live);
+            const parsed = parseSlotsAndPeriod(live.message);
+            setSlots(parsed.slots);
+            setPeriod(parsed.period);
+            saveAnnouncement(live);
+          }
+        })
+        .catch((err) => {
+          console.warn("[Admin] Falling back to local cache:", err);
+          const current = getStoredAnnouncement();
+          setConfig(current);
+          const parsed = parseSlotsAndPeriod(current.message);
+          setSlots(parsed.slots);
+          setPeriod(parsed.period);
+        })
+        .finally(() => {
+          setIsLoadingDb(false);
+        });
     }
   }, [isAuthenticated]);
 
@@ -258,42 +255,46 @@ function AdminPage() {
   const handleSave = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
 
-    // 1. Save to localStorage immediately (instant local preview)
-    saveAnnouncement(config);
-    setSavedSuccess(true);
-    setTimeout(() => setSavedSuccess(false), 4000);
+    setSaveStatus("saving");
+    setSaveError("");
 
-    // 2. Commit to GitHub so ALL visitors see the change after deployment
-    setDeployStatus("deploying");
-    setDeployError("");
+    // 1. Immediately save to localStorage and broadcast across local tabs
+    saveAnnouncement(config);
 
     try {
-      const result = await deployAnnouncementUniversal({
-        ...config,
-        githubToken: githubToken.trim() || undefined,
-      });
-
-      if (result.success) {
-        setDeployStatus("success");
-        setTimeout(() => setDeployStatus("idle"), 10000);
+      // 2. Save directly to live MongoDB Atlas database
+      const res = await saveLiveAnnouncementFn({ data: config });
+      if (res.success) {
+        setSaveStatus("success");
+        setTimeout(() => setSaveStatus("idle"), 4000);
       } else {
-        setDeployStatus("error");
-        setDeployError(result.error);
+        setSaveStatus("error");
+        setSaveError(res.error || "Failed to update database.");
       }
     } catch (err) {
-      setDeployStatus("error");
-      setDeployError(err instanceof Error ? err.message : String(err));
+      setSaveStatus("error");
+      setSaveError(err instanceof Error ? err.message : String(err));
     }
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
     if (confirm("Reset announcement banner back to original default?")) {
-      const def = resetAnnouncement();
-      setConfig(def);
-      setPeriod("October – November 2026");
-      setSlots("2");
-      setSavedSuccess(true);
-      setTimeout(() => setSavedSuccess(false), 3000);
+      setSaveStatus("saving");
+      setSaveError("");
+      try {
+        const res = await resetLiveAnnouncementFn();
+        const def = res.config || resetAnnouncement();
+        setConfig(def);
+        const parsed = parseSlotsAndPeriod(def.message);
+        setPeriod(parsed.period);
+        setSlots(parsed.slots);
+        saveAnnouncement(def);
+        setSaveStatus("success");
+        setTimeout(() => setSaveStatus("idle"), 4000);
+      } catch (err) {
+        setSaveStatus("error");
+        setSaveError(err instanceof Error ? err.message : "Failed to reset.");
+      }
     }
   };
 
@@ -676,6 +677,14 @@ function AdminPage() {
               Easily change the monthly availability banner on your header without touching code.
             </p>
           </div>
+
+          <div className="flex items-center gap-2 rounded-sm border border-emerald-200 bg-emerald-50 px-3.5 py-2 text-xs text-emerald-900 shadow-2xs">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="font-semibold">Live Database: Connected</span>
+          </div>
         </div>
 
         {/* Live Preview Bar */}
@@ -846,18 +855,18 @@ function AdminPage() {
               <div className="flex items-center gap-3 w-full sm:w-auto">
                 <button
                   type="submit"
-                  disabled={deployStatus === "deploying"}
+                  disabled={saveStatus === "saving" || isLoadingDb}
                   className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-sm bg-primary px-6 py-3 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-gold hover:text-primary transition-all shadow-soft disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {deployStatus === "deploying" ? (
+                  {saveStatus === "saving" ? (
                     <>
                       <RefreshCw className="h-4 w-4 animate-spin" />
-                      <span>Saving & Deploying…</span>
+                      <span>Saving to Live Database…</span>
                     </>
                   ) : (
                     <>
-                      <Globe className="h-4 w-4" />
-                      <span>Save & Deploy to Live Site</span>
+                      <Save className="h-4 w-4" />
+                      <span>Save & Publish Live</span>
                     </>
                   )}
                 </button>
@@ -865,108 +874,59 @@ function AdminPage() {
                 <button
                   type="button"
                   onClick={handleReset}
-                  disabled={deployStatus === "deploying"}
+                  disabled={saveStatus === "saving" || isLoadingDb}
                   className="inline-flex items-center justify-center gap-1.5 rounded-sm border border-border px-4 py-3 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:opacity-50"
                   title="Reset to code defaults"
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
-                  <span>Reset</span>
+                  <span>Reset to Default</span>
                 </button>
               </div>
 
               {/* Status feedback */}
               <div className="flex flex-col items-end gap-1.5 w-full sm:w-auto">
-                {savedSuccess && (
-                  <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-sm animate-in fade-in">
-                    <CheckCircle2 className="h-4 w-4 shrink-0" />
-                    <span>Saved locally! Deploying to all visitors…</span>
-                  </div>
-                )}
-                {deployStatus === "success" && (
+                {saveStatus === "success" && (
                   <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-300 px-3.5 py-2 rounded-sm animate-in fade-in">
-                    <Globe className="h-4 w-4 shrink-0" />
-                    <span>✓ Deployed to GitHub! Goes live for everyone in ~1–2 min.</span>
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
+                    <span>✓ Live on Website! Updated in database and active immediately.</span>
                   </div>
                 )}
-                {deployStatus === "error" && (
+                {saveStatus === "error" && (
                   <div className="flex flex-col gap-1 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-3.5 py-2 rounded-sm animate-in fade-in max-w-sm">
                     <div className="flex items-center gap-2">
                       <AlertTriangle className="h-4 w-4 shrink-0 text-rose-500" />
-                      <span className="font-bold">Deploy failed — changes saved locally only.</span>
+                      <span className="font-bold">Database Save Error:</span>
                     </div>
-                    <span className="text-rose-600 font-normal pl-6">{deployError}</span>
+                    <span className="text-rose-600 font-normal pl-6">{saveError}</span>
                   </div>
                 )}
               </div>
             </div>
 
-            {/* GitHub Deployment Integration Card */}
-            <div className="mt-2 rounded-sm border border-border bg-secondary/40 p-4">
+            {/* Live Database Integration Card */}
+            <div className="mt-2 rounded-sm border border-emerald-200/80 bg-emerald-50/40 p-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <div className={`h-2.5 w-2.5 rounded-full ${githubToken ? "bg-emerald-500 animate-pulse" : "bg-amber-500"}`} />
-                  <span className="text-xs font-semibold text-foreground">
-                    {githubToken ? "GitHub Live Auto-Deploy: Connected" : "GitHub Live Auto-Deploy: Token Needed"}
-                  </span>
-                  <span className="text-[11px] text-muted-foreground hidden sm:inline">
-                    (Repo: Sumitt7607/metahause)
-                  </span>
+                <div className="flex items-center gap-2.5">
+                  <div className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-emerald-950 block">
+                      Live Cloud Database: Connected (MongoDB Atlas)
+                    </span>
+                    <span className="text-[11px] text-emerald-800/80 block mt-0.5">
+                      Updates save directly into MongoDB and take effect across the entire website instantly.
+                    </span>
+                  </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setShowTokenInput(!showTokenInput)}
-                  className="text-xs text-gold hover:underline font-medium text-left sm:text-right"
-                >
-                  {showTokenInput ? "Hide Token Settings" : githubToken ? "Manage / Change Token" : "Enter GitHub Token"}
-                </button>
+                <div className="flex items-center gap-1.5 text-[11px] text-emerald-800 bg-emerald-100/70 border border-emerald-200/70 px-2.5 py-1 rounded-sm font-mono shrink-0">
+                  <Database className="h-3 w-3 text-emerald-700" />
+                  <span>meta.announcements</span>
+                </div>
               </div>
-
-              {(!githubToken || showTokenInput) && (
-                <div className="mt-3 pt-3 border-t border-border/60 space-y-2">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block">
-                    GitHub Personal Access Token (PAT):
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="password"
-                      value={githubToken}
-                      onChange={(e) => setGithubToken(e.target.value)}
-                      placeholder="github_pat_..."
-                      className="flex-1 rounded-sm border border-input bg-background px-3 py-2 text-xs font-mono text-foreground focus:border-gold focus:outline-none"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleSaveToken(githubToken)}
-                      className="rounded-sm bg-primary px-3 py-2 text-xs font-bold text-primary-foreground hover:bg-gold hover:text-primary transition-colors flex items-center gap-1.5"
-                    >
-                      <Check className="h-3.5 w-3.5" />
-                      <span>Save Token</span>
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-[11px] text-muted-foreground">
-                      Stored privately in your browser. Enables clicking "Save & Deploy" to publish directly to your live domain.
-                    </p>
-                    {tokenSaveNotice && (
-                      <span className="text-[11px] text-emerald-600 font-bold flex items-center gap-1">
-                        <CheckCircle2 className="h-3 w-3" /> Saved!
-                      </span>
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
-
-            {/* GitHub token setup hint */}
-            {deployStatus === "error" && !githubToken && (
-              <div className="rounded-sm border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900">
-                <p className="font-bold mb-1">⚡ Connect your token above to deploy live:</p>
-                <p className="text-amber-800 leading-relaxed">
-                  Paste your GitHub token in the box above and click <strong>Save Token</strong>. Once saved, clicking <strong>Save & Deploy to Live Site</strong> will automatically update the live banner for every visitor worldwide in 1–2 minutes!
-                </p>
-              </div>
-            )}
           </div>
         </form>
 
